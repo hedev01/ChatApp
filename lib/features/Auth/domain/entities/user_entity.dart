@@ -1,15 +1,17 @@
 class UserEntity {
-  //   user.UserId,
-  // user.FirstName,
-  // user.LastName,
-  // user.Email,
-  // accessToken
+  bool? isSuccess;
+  UserDataEntity? data;
+  String? errorMessage;
+  UserEntity({this.isSuccess, this.data, this.errorMessage});
+}
+
+class UserDataEntity {
   final String userId;
   final String firstName;
   final String lastName;
   final String email;
   final String accessToken;
-  UserEntity({
+  UserDataEntity({
     required this.userId,
     required this.firstName,
     required this.lastName,
