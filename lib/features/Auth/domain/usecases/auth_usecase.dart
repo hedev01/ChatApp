@@ -6,7 +6,11 @@ class AuthUseCase {
   final AuthRepository repository;
   const AuthUseCase(this.repository);
 
-  Future<UserEntity> register(RegisterRequestEntity request) {
+  Future<UserEntity?> register(RegisterRequestEntity request) {
     return repository.register(request);
+  }
+
+  Future<void> saveUser(UserDataEntity user) async {
+    return repository.saveUser(user);
   }
 }
