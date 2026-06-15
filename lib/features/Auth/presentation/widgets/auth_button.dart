@@ -4,9 +4,13 @@ class AuthButton extends StatelessWidget {
   const AuthButton({
     super.key,
     required this.size,
+    required this.onPressed,
+    this.child
   });
 
   final Size size;
+  final void Function() onPressed;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,8 @@ class AuthButton extends StatelessWidget {
       width: double.infinity,
       height: size.height * .07,
       child: ElevatedButton(
-        onPressed: () {},
-        child: Text('Register'),
+        onPressed: onPressed,
+        child: child ?? Text('Register'),
       ),
     );
   }
