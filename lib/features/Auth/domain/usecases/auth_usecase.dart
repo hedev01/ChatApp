@@ -13,4 +13,12 @@ class AuthUseCase {
   Future<void> saveUser(UserDataEntity user) async {
     return repository.saveUser(user);
   }
+
+  Future<UserDataEntity> getUser() async {
+    return repository.getUser();
+  }
+
+  Future<UserEntity> login(String email, String password) {
+    return repository.login(email, password);
+  }
 }

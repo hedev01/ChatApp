@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-class RegisterTitle extends StatelessWidget {
-  const RegisterTitle({
-    super.key,
-  });
+class AuthTitle extends StatelessWidget {
+  const AuthTitle({super.key , required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      "Create Your\n Account",
+      title,
       style: TextStyle(fontSize: 35, color: Color(0xff323142)),
     );
   }

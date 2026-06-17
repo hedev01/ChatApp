@@ -15,26 +15,24 @@ class AuthRepositoryImp implements AuthRepository {
   @override
   Future<UserEntity?> register(RegisterRequestEntity request) async {
     return await remote.register(
-      UserRequestModel(
-        username: request.username,
-        email: request.email,
-        password: request.password,
-        firstName: request.firstName,
-        lastName: request.lastName,
-      ),
+      UserRequestModel.fromEntity(request)
     );
   }
 
   @override
   Future<void> saveUser(UserDataEntity user) async {
     return await local.saveUser(
-      UserDataModel(
-        userId: user.userId,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        accessToken: user.accessToken,
-      ),
+      UserDataModel.fromEntity(user)
     );
+  }
+  
+  @override
+  Future<UserDataEntity> getUser() async{
+    return await local.getUser();
+  }
+  
+  @override
+  Future<UserEntity> login(String email, String password)async {
+   return await remote.login(email, password);
   }
 }

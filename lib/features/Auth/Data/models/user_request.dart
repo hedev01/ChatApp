@@ -8,6 +8,16 @@ class UserRequestModel extends RegisterRequestEntity {
     required super.firstName,
     required super.lastName,
   });
+  
+  factory UserRequestModel.fromEntity(RegisterRequestEntity entity) {
+    return UserRequestModel(
+      username: entity.username,
+      email: entity.email,
+      password: entity.password,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       "userName": username,

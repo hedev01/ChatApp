@@ -1,4 +1,4 @@
-import '../../domain/entities/user_entity.dart';
+import '../../../domain/entities/user_entity.dart';
 
 enum RegisterStatus { initial, loading, success, failure }
 

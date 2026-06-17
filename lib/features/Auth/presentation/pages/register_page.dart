@@ -1,9 +1,13 @@
 import 'package:chat_app/core/theme/app_colors.dart';
-import 'package:chat_app/features/Auth/presentation/bloc/register_bloc.dart';
-import 'package:chat_app/features/Auth/presentation/bloc/register_event.dart';
-import 'package:chat_app/features/Auth/presentation/bloc/register_state.dart';
-import 'package:chat_app/features/Auth/presentation/widgets/register_title.dart';
+import 'package:chat_app/features/Auth/domain/entities/user_entity.dart';
+import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
+import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
+import 'package:chat_app/features/Auth/presentation/bloc/register/register_event.dart';
+import 'package:chat_app/features/Auth/presentation/bloc/register/register_state.dart';
+import 'package:chat_app/features/Auth/presentation/pages/login_page.dart';
+import 'package:chat_app/features/Auth/presentation/widgets/auth_title.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
+import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -36,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
   }
 
+  final AuthUseCase authUseCase = AuthUseCase(locator.get());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -53,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 children: [
                   SizedBox(height: size.height * .06),
-                  RegisterTitle(),
+                  AuthTitle(title: "Create Your\n Account"),
                   SizedBox(height: size.height * .05),
                   AppTextField(
                     hint: "User Name",
@@ -119,7 +124,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   SizedBox(height: size.height * .02),
-                  AuthFooter(onTap: () {}),
+                  AuthFooter(
+                    linkText: "Sign Up",
+                    onTap: () async {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+                        return LoginPage();
+                      },));
+                    },
+                  ),
                 ],
               ),
             ),

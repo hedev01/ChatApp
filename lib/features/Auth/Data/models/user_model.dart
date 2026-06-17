@@ -21,7 +21,27 @@ class UserDataModel extends UserDataEntity {
     required super.accessToken,
   });
 
+  factory UserDataModel.fromEntity(UserDataEntity entity) {
+    return UserDataModel(
+      userId: entity.userId,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      email: entity.email,
+      accessToken: entity.accessToken,
+    );
+  }
+
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
+    return UserDataModel(
+      userId: json["userId"],
+      firstName: json["firstName"],
+      lastName: json["lastName"],
+      email: json["email"],
+      accessToken: json["accessToken"],
+    );
+  }
+
+   factory UserDataModel.fromHive(Map<dynamic, dynamic> json) {
     return UserDataModel(
       userId: json["userId"],
       firstName: json["firstName"],

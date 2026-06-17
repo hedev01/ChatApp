@@ -10,4 +10,11 @@ class AuthLocalDataSourceImp implements AuthLocalDataSource {
 
     await box.put('user', user.toJson());
   }
+
+  @override
+  Future<UserDataModel> getUser() async {
+    final box = await Hive.openBox(boxName);
+    var user = box.get('user');
+    return UserDataModel.fromHive(user);
+  }
 }
