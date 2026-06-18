@@ -4,6 +4,7 @@ import 'package:chat_app/features/Auth/presentation/bloc/login/login_state.dart'
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_title.dart';
+import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/global_widget/success_message_widget.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,19 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: size.height * .02),
                   PasswordTextField(passwordCtr: passwordCtr),
                   SizedBox(height: size.height * .02),
-                  BlocBuilder<LoginBloc, LoginState>(
+                  BlocConsumer<LoginBloc, LoginState>(
+                    listener: (context, state) {
+                      if (state.status == LoginStatus.success) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ChatListPage();
+                            },
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    },
                     builder: (context, state) {
                       return AuthButton(
                         size: size,
