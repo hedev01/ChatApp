@@ -109,7 +109,7 @@ lib
 
 ### 🔐 Sign In
 
-<img src="screenshots/sign_in.png" width="250"/>
+<img src="screenshot/Sign In.png" width="250"/>
 
 </td>
 
@@ -117,7 +117,7 @@ lib
 
 ### 📝 Sign Up
 
-<img src="screenshots/sign_up.png" width="250"/>
+<img src="screenshot/Sign Up.png" width="250"/>
 
 </td>
 
@@ -125,7 +125,7 @@ lib
 
 ### 👥 Users
 
-<img src="screenshots/users.png" width="250"/>
+<img src="screenshot/Users.png" width="250"/>
 
 </td>
 
