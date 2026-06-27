@@ -7,6 +7,7 @@ import 'package:chat_app/features/Auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/cubit/password_visibility_cubit.dart';
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
+import 'package:chat_app/features/Auth/presentation/pages/splash_screen.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/locator.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: RegisterPage(),
+      home: SplashScreen(),
     );
   }
 }
