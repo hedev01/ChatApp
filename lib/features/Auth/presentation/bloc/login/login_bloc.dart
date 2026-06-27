@@ -15,9 +15,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final user = await useCase.login(event.email, event.password);
       if (user.isSuccess!) {
+        await useCase.saveUser(user.data!);
         emit(state.copyWith(user: user, status: LoginStatus.success));
       } else {
-        emit(state.copyWith(error: user.errorMessage , status: LoginStatus.failure));
+        emit(
+          state.copyWith(error: user.errorMessage, status: LoginStatus.failure),
+        );
       }
     } catch (e) {
       emit(state.copyWith(status: LoginStatus.failure, error: e.toString()));
