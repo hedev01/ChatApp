@@ -6,6 +6,7 @@ import 'package:chat_app/features/Auth/presentation/bloc/register/register_event
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_state.dart';
 import 'package:chat_app/features/Auth/presentation/pages/login_page.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_title.dart';
+import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   BlocBuilder<RegisterBloc, RegisterState>(
                     builder: (context, state) {
                       if (state.status == RegisterStatus.success) {
-                        print("success");
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ChatListPage();
+                            },
+                          ),
+                          (route) => false,
+                        );
                       }
                       return AuthButton(
                         size: size,
@@ -127,9 +135,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   AuthFooter(
                     linkText: "Sign Up",
                     onTap: () async {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-                        return LoginPage();
-                      },));
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return LoginPage();
+                          },
+                        ),
+                      );
                     },
                   ),
                 ],
