@@ -7,6 +7,7 @@ import 'package:chat_app/features/Auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/cubit/password_visibility_cubit.dart';
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
+import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/locator.dart';
 import 'package:chat_app/signalr_client.dart';
@@ -24,7 +25,8 @@ void main() async {
       providers: [
         BlocProvider(create: (_) => PasswordVisibilityCubit()),
         BlocProvider(create: (_) => RegisterBloc(locator.get())),
-        BlocProvider(create: (_) => LoginBloc(locator.get()),)
+        BlocProvider(create: (_) => LoginBloc(locator.get()),),
+        BlocProvider(create: (_) => ChatBloc(locator.get()),)
       ],
       child: const MyApp(),
     ),

@@ -93,7 +93,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) {
-                              return ChatListPage();
+                              return ChatListPage(
+                                userId: state.user!.data!.userId,
+                              );
                             },
                           ),
                           (route) => false,
