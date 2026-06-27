@@ -60,7 +60,7 @@ class ConversationTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    user.firstName,
+                    '${user.firstName} ${user.lastName}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
