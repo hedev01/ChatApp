@@ -179,7 +179,7 @@ lib
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YourUsername/flutter-chat-app.git
+git clone https://github.com/hedev01/ChatApp.git
 ```
 
 ### Install Packages
