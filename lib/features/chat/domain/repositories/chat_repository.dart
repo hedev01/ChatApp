@@ -1,4 +1,3 @@
-import 'package:chat_app/features/chat/data/models/message_model.dart';
 import 'package:chat_app/features/chat/domain/entities/get_user_entity.dart';
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 

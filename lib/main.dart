@@ -1,4 +1,5 @@
 import 'package:chat_app/chat_page.dart';
+import 'package:chat_app/core/services/lifecycle_service.dart';
 import 'package:chat_app/core/theme/app_theme.dart';
 import 'package:chat_app/features/Auth/Data/repositories/auth_repository_imp.dart';
 import 'package:chat_app/features/Auth/domain/repositories/auth_repository.dart';
@@ -12,7 +13,6 @@ import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/locator.dart';
-import 'package:chat_app/signalr_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,6 +22,8 @@ void main() async {
 
   await Hive.initFlutter();
   setup();
+  final lifecycle = LifecycleService(locator.get());
+  lifecycle.init();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -30,7 +32,12 @@ void main() async {
         BlocProvider(create: (_) => LoginBloc(locator.get())),
         BlocProvider(create: (_) => ChatBloc(locator.get())),
         BlocProvider(
-          create: (_) => ChatCubit(locator.get(), locator.get(), locator.get() , locator.get()),
+          create: (_) => ChatCubit(
+            locator.get(),
+            locator.get(),
+            locator.get(),
+            locator.get(),
+          ),
         ),
       ],
       child: const MyApp(),

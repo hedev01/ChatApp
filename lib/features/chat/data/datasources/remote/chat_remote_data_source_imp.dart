@@ -56,7 +56,7 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
 
   @override
   Future<void> stop() async {
-    if (connection.state == HubConnectionState.Connected) {
+    if (connection.state != HubConnectionState.Disconnected) {
       await connection.stop();
     }
   }

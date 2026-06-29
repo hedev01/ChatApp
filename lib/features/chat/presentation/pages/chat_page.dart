@@ -35,7 +35,6 @@ class _ChatPageState extends State<ChatPage> {
 
     currentUser = await auth.getUser();
 
-    await chatCubit.connect(currentUser.userId);
   }
 
   @override
