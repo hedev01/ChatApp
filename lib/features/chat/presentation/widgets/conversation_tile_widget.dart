@@ -1,3 +1,4 @@
+import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/get_user_entity.dart';
@@ -11,7 +12,13 @@ class ConversationTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24),
       onTap: () {
-        // Navigate to chat page
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return ChatPage(chatItem: user);
+            },
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16),

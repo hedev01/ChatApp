@@ -4,9 +4,14 @@ import 'dart:convert';
 import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/features/chat/data/datasources/remote/chat_remote_data_source.dart';
 import 'package:chat_app/features/chat/data/models/get_user_model.dart';
+import 'package:chat_app/features/chat/data/models/message_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:signalr_netcore/signalr_client.dart';
 
 class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
+  late HubConnection connection;
+
+  final controller = StreamController<MessageModel>.broadcast();
   @override
   Future<GetUserModel> getUsers(String userId) async {
     GetUserModel? data;
@@ -26,5 +31,33 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       );
     }
     return data!;
+  }
+
+  @override
+  Future<void> connect(String userId) async {
+    connection = HubConnectionBuilder()
+        .withUrl("${Constans.baseUrl}/chatHub?userId=$userId")
+        .build();
+
+    connection.on("ReceiveMessage", (args) {
+      controller.add(MessageModel.fromHub(args!));
+    });
+
+    await connection.start();
+  }
+
+  @override
+  Stream<MessageModel> get messages => controller.stream;
+
+  @override
+  Future<void> send(MessageModel message) async {
+    await connection.invoke("SendMessage", args: [message.toJson()]);
+  }
+
+  @override
+  Future<void> stop() async {
+    if (connection.state == HubConnectionState.Connected) {
+      await connection.stop();
+    }
   }
 }

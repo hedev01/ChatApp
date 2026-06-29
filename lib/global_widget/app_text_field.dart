@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
   final String hint;
-  final IconData icon;
+  final IconData? icon;
   final bool obscure;
   final TextEditingController controller;
+  final InputBorder? focusedBorder;
 
   const AppTextField({
     super.key,
     required this.hint,
-    required this.icon,
+    this.icon,
     required this.controller,
+     this.focusedBorder,
     this.obscure = false,
   });
 
@@ -22,6 +24,7 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Icon(icon),
         hintText: hint,
+        focusedBorder: focusedBorder,
       ),
     );
   }
