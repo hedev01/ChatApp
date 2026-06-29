@@ -133,8 +133,6 @@ lib
 
 </table>
 
-> Replace the images above with your own screenshots.
-
 ---
 
 # 🚀 Roadmap
