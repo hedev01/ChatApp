@@ -45,8 +45,8 @@ This project is being developed step by step and new features will be added cont
 - ✅ Login
 - ✅ Register
 - ✅ Users List
-- 🚧 Real-Time Chat
-- 🚧 SignalR Integration
+- ✅ Real-Time Chat
+- ✅ SignalR Integration
 - 🚧 User Profile
 - 🚧 Online / Offline Status
 - 🚧 Push Notifications
