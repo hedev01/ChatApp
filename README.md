@@ -197,19 +197,22 @@ flutter run
 # 📦 Dependencies
 
 - flutter_bloc
-- dio
+- bloc
 - get_it
-- equatable
-- dartz
-- flutter_secure_storage
-- shared_preferences
+- http
+- signalr_netcore
+- hive
+- hive_flutter
+- flutter_staggered_animations
+- path_provider
+- shimmer
 
 ---
 
 # 🎯 Current Progress
 
 ```text
-████████████░░░░░░░░░░░░ 45%
+█████████████░░░░░░░░░░░ 55%
 ```
 
 Authentication ✔️
@@ -218,9 +221,9 @@ API ✔️
 
 Users List ✔️
 
-Chat 🚧
+Chat ✔️
 
-SignalR 🚧
+SignalR ✔️
 
 ---
 
