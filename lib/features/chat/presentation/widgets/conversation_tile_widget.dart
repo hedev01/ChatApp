@@ -1,11 +1,15 @@
+import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
+import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/get_user_entity.dart';
 
 class ConversationTile extends StatelessWidget {
   final GetUserDataEntity user;
-  const ConversationTile({super.key, required this.user});
+  final String userId;
+  const ConversationTile({super.key, required this.user, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class ConversationTile extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return ChatPage(chatItem: user);
+              return ChatPage(chatItem: user, userId: userId);
             },
           ),
         );
@@ -43,19 +47,23 @@ class ConversationTile extends StatelessWidget {
                   ),
                 ),
 
-                //if (chat['online'])
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 14,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                  ),
+                BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) {
+                    final isOnlien = state.isOnline[user.userId] ?? false;
+                    return Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: isOnlien ? Colors.green : Colors.grey,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

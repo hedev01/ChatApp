@@ -1,5 +1,6 @@
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
+import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,8 @@ import '../widgets/chat_input.dart';
 
 class ChatPage extends StatefulWidget {
   final GetUserDataEntity chatItem;
-  const ChatPage({super.key, required this.chatItem});
+  final String userId;
+  const ChatPage({super.key, required this.chatItem , required this.userId});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -21,7 +23,6 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final controller = TextEditingController();
-  late UserDataEntity currentUser;
   late ChatCubit chatCubit;
   @override
   void initState() {
@@ -31,10 +32,6 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> init() async {
     chatCubit = context.read<ChatCubit>();
-    final auth = AuthUseCase(locator());
-
-    currentUser = await auth.getUser();
-
   }
 
   @override
@@ -59,15 +56,15 @@ class _ChatPageState extends State<ChatPage> {
               child: Divider(thickness: 0.6),
             ),
             Expanded(
-              child: BlocBuilder<ChatCubit, List<MessageEntity>>(
-                builder: (context, messages) {
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
                   return ListView.builder(
                     padding: const EdgeInsets.all(18),
-                    itemCount: messages.length,
+                    itemCount: state.messages.length,
                     itemBuilder: (_, index) {
                       return ChatBubble(
-                        message: messages[index],
-                        myUserId: currentUser.userId,
+                        message: state.messages[index],
+                        myUserId: widget.userId,
                       );
                     },
                   );
@@ -80,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
               onSend: () async {
                 chatCubit.send(
                   controller.text,
-                  currentUser.userId,
+                  widget.userId,
                   widget.chatItem.userId,
                 );
                 controller.clear();
@@ -92,9 +89,4 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  @override
-  void dispose() {
-    chatCubit.stop();
-    super.dispose();
-  }
 }

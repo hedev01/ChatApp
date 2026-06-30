@@ -13,10 +13,14 @@ import 'package:chat_app/features/chat/data/repositories/chat_repository_imp.dar
 import 'package:chat_app/features/chat/domain/repositories/chat_repository.dart';
 import 'package:chat_app/features/chat/domain/usecases/chat_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/connect_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_chat_usecase.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
@@ -40,9 +44,23 @@ void setup() {
   locator.registerSingleton(ReceiveMessagesUseCase(locator()));
   locator.registerSingleton(ConnectChatUseCase(locator.get()));
   locator.registerSingleton(StopChatUsecase(locator.get()));
+  locator.registerSingleton(OnlineUsecase(locator.get()));
+  locator.registerSingleton(OfflineUsecase(locator.get()));
+  locator.registerSingleton(OnlineUsersUsecase(locator.get()));
 
   ///Bloc
   locator.registerSingleton(RegisterBloc(locator()));
   locator.registerSingleton(LoginBloc(locator()));
   locator.registerSingleton(ChatBloc(locator()));
+  locator.registerSingleton(
+    ChatCubit(
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
+    ),
+  );
 }

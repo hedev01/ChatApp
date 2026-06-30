@@ -38,4 +38,19 @@ class ChatRepositoryImp extends ChatRepository {
   Future<void> stop() {
     return remote.stop();
   }
+  
+  @override
+  Stream<Set<String>> offline() {
+    return remote.offline;
+  }
+  
+  @override
+  Stream<Set<String>> online() {
+    return remote.online;
+  }
+  
+  @override
+  Stream<List<String>> onlineUsers() {
+    return remote.onlineUsers;
+  }
 }

@@ -5,6 +5,7 @@ import 'package:chat_app/features/Auth/presentation/bloc/login/login_state.dart'
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_title.dart';
+import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/global_widget/success_message_widget.dart';
@@ -29,10 +30,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController emailCtr;
   late final TextEditingController passwordCtr;
+  late final ChatCubit chatCubit;
   @override
   void initState() {
     emailCtr = TextEditingController();
     passwordCtr = TextEditingController();
+    chatCubit = context.read<ChatCubit>();
     super.initState();
   }
 
@@ -66,6 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                   BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) async {
                       if (state.status == LoginStatus.success) {
+                        AuthUseCase authUseCase = AuthUseCase(locator.get());
+                        final user = await authUseCase.getUser();
+                        await chatCubit.connect(user.userId);
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) {

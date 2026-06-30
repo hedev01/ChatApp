@@ -10,8 +10,12 @@ import 'package:signalr_netcore/signalr_client.dart';
 
 class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   late HubConnection connection;
-
   final controller = StreamController<MessageModel>.broadcast();
+  final onlineUser = StreamController<Set<String>>.broadcast();
+  final offlineUser = StreamController<Set<String>>.broadcast();
+  final onlineUserController = StreamController<List<String>>.broadcast();
+
+  final Set<String> _onlineUsers = {};
   @override
   Future<GetUserModel> getUsers(String userId) async {
     GetUserModel? data;
@@ -43,6 +47,23 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       controller.add(MessageModel.fromHub(args!));
     });
 
+    connection.on("UserOnline", (args) {
+      final userId = args![0].toString();
+      _onlineUsers.add(userId);
+      onlineUser.add(Set.from(_onlineUsers));
+    });
+
+    connection.on("UserOffline", (args) {
+      final userId = args![0].toString();
+      _onlineUsers.remove(userId);
+      offlineUser.add(Set.from(_onlineUsers));
+    });
+    connection.on("OnlineUsers", (args) {
+      final users = (args![0] as List).cast<String>();
+
+      onlineUserController.add(users);
+    });
+
     await connection.start();
   }
 
@@ -60,4 +81,13 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       await connection.stop();
     }
   }
+
+  @override
+  Stream<Set<String>> get offline => offlineUser.stream;
+
+  @override
+  Stream<Set<String>> get online => onlineUser.stream;
+
+  @override
+  Stream<List<String>> get onlineUsers => onlineUserController.stream;
 }

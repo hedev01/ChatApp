@@ -1,17 +1,11 @@
-import 'package:chat_app/chat_page.dart';
 import 'package:chat_app/core/services/lifecycle_service.dart';
 import 'package:chat_app/core/theme/app_theme.dart';
-import 'package:chat_app/features/Auth/Data/repositories/auth_repository_imp.dart';
-import 'package:chat_app/features/Auth/domain/repositories/auth_repository.dart';
-import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/cubit/password_visibility_cubit.dart';
-import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/Auth/presentation/pages/splash_screen.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
-import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +31,9 @@ void main() async {
             locator.get(),
             locator.get(),
             locator.get(),
+            locator.get(),
+            locator.get(),
+            locator.get()
           ),
         ),
       ],

@@ -9,5 +9,8 @@ abstract class ChatRemoteDataSource {
   Future<void> send(MessageModel message);
 
   Stream<MessageModel> get messages;
+  Stream<Set<String>> get online;
+  Stream<Set<String>> get offline; 
+  Stream<List<String>> get onlineUsers;
   Future<void> stop();
 }

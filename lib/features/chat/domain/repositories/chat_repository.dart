@@ -4,9 +4,10 @@ import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 abstract class ChatRepository {
   Future<GetUserEntity> getUsers(String userId);
   Future<void> connect(String userId);
-
   Future<void> send(MessageEntity message);
-
   Stream<MessageEntity> getMessages();
+  Stream<Set<String>> online();
+  Stream<Set<String>> offline();
+  Stream<List<String>> onlineUsers();
   Future<void> stop();
 }

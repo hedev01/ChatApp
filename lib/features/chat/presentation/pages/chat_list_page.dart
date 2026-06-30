@@ -48,7 +48,7 @@ class _ChatListPageState extends State<ChatListPage> {
                     return ListView.separated(
                       itemBuilder: (context, index) {
                         final user = state.user![index];
-                        return ConversationTile(user: user);
+                        return ConversationTile(user: user,userId: widget.userId,);
                       },
                       separatorBuilder: (_, __) => const SizedBox(height: 14),
                       itemCount: state.user!.length,
