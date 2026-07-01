@@ -19,6 +19,18 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 </p>
 
+# 🎥 Demo
+
+## User A
+
+https://github.com/ChatApp/Videos/assets/User A.webm
+
+---
+
+## User B
+
+https://github.com/ChatApp/Videos/assets/User B.webm
+
 > 🚧 This project is currently under active development.
 
 ---
