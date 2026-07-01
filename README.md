@@ -23,7 +23,7 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 ## User A
 
-https://github.com/ChatApp/Videos/assets/UserA.webm
+https://github.com/hedev01/ChatApp/blob/main/assets/videos/UserA.webm
 
 ---
 
