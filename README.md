@@ -19,17 +19,29 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 </p>
 
-# 🎥 Demo
+<h2 align="center">🎥 Live Chat Demo</h2>
 
-## User A
+<table align="center">
+<tr>
+<td align="center">
 
-https://github.com/hedev01/ChatApp/blob/main/assets/videos/UserA.webm
+<b>User A</b><br><br>
 
----
+<img src="videos/User A.gif" width="300"/>
 
-## User B
+</td>
 
-https://github.com/ChatApp/Videos/assets/UserB.webm
+<td width="40"></td>
+
+<td align="center">
+
+<b>User B</b><br><br>
+
+<img src="videos/User B.gif" width="300"/>
+
+</td>
+</tr>
+</table>
 
 > 🚧 This project is currently under active development.
 
