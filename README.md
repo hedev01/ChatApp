@@ -23,13 +23,13 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 ## User A
 
-https://github.com/ChatApp/Videos/assets/User A.webm
+https://github.com/hedev01/ChatApp/blob/main/assets/videos/UserA.webm
 
 ---
 
 ## User B
 
-https://github.com/ChatApp/Videos/assets/User B.webm
+https://github.com/ChatApp/Videos/assets/UserB.webm
 
 > 🚧 This project is currently under active development.
 
