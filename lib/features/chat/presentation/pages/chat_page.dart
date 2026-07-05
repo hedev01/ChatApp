@@ -5,6 +5,7 @@ import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/helper/helper.dart';
 import '../../../../locator.dart';
 import '../../../Auth/domain/entities/user_entity.dart';
 import '../../../Auth/domain/usecases/auth_usecase.dart';
@@ -15,7 +16,7 @@ import '../widgets/chat_input.dart';
 class ChatPage extends StatefulWidget {
   final GetUserDataEntity chatItem;
   final String userId;
-  const ChatPage({super.key, required this.chatItem , required this.userId});
+  const ChatPage({super.key, required this.chatItem, required this.userId});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -27,11 +28,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      init();
+    });
   }
 
-  Future<void> init() async {
+  init() {
     chatCubit = context.read<ChatCubit>();
+    chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
   }
 
   @override
@@ -58,12 +62,22 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
+                  final conversationId = Helper.getConversationId(
+                    widget.userId,
+                    widget.chatItem.userId,
+                  );
+
+                  final messages = state.messages[conversationId] ?? [];
+
+                  print(state.messages.keys);
+                  print(conversationId);
+
                   return ListView.builder(
                     padding: const EdgeInsets.all(18),
-                    itemCount: state.messages.length,
+                    itemCount: messages.length,
                     itemBuilder: (_, index) {
                       return ChatBubble(
-                        message: state.messages[index],
+                        message: messages[index],
                         myUserId: widget.userId,
                       );
                     },
@@ -88,5 +102,4 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
 }

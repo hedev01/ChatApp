@@ -13,6 +13,7 @@ import 'package:chat_app/features/chat/data/repositories/chat_repository_imp.dar
 import 'package:chat_app/features/chat/domain/repositories/chat_repository.dart';
 import 'package:chat_app/features/chat/domain/usecases/chat_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/connect_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/mark_as_read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
@@ -47,6 +48,7 @@ void setup() {
   locator.registerSingleton(OnlineUsecase(locator.get()));
   locator.registerSingleton(OfflineUsecase(locator.get()));
   locator.registerSingleton(OnlineUsersUsecase(locator.get()));
+  locator.registerSingleton(MarkAsReadUsecase(locator.get()));
 
   ///Bloc
   locator.registerSingleton(RegisterBloc(locator()));
@@ -61,6 +63,7 @@ void setup() {
       locator.get(),
       locator.get(),
       locator.get(),
+      locator.get()
     ),
   );
 }

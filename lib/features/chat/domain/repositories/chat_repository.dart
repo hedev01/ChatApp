@@ -6,8 +6,10 @@ abstract class ChatRepository {
   Future<void> connect(String userId);
   Future<void> send(MessageEntity message);
   Stream<MessageEntity> getMessages();
+  Future<void> stop();
+  Future<void> markAsRead(String senderId);
   Stream<Set<String>> online();
   Stream<Set<String>> offline();
   Stream<List<String>> onlineUsers();
-  Future<void> stop();
+  Stream<String> read();
 }

@@ -30,6 +30,7 @@ class ChatRepositoryImp extends ChatRepository {
         senderId: message.senderId,
         receiverId: message.receiverId,
         content: message.content,
+        isRead: false
       ),
     );
   }
@@ -52,5 +53,15 @@ class ChatRepositoryImp extends ChatRepository {
   @override
   Stream<List<String>> onlineUsers() {
     return remote.onlineUsers;
+  }
+  
+  @override
+  Stream<String> read() {
+    return remote.conversationRead;
+  }
+  
+  @override
+  Future<void> markAsRead(String senderId) {
+    return remote.markAsRead(senderId);
   }
 }

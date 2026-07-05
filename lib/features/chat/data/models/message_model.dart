@@ -6,14 +6,16 @@ class MessageModel extends MessageEntity {
     required super.senderId,
     required super.receiverId,
     required super.content,
+    required super.isRead
   });
 
   factory MessageModel.fromHub(List<Object?> args){
 
     return MessageModel(
       senderId: args[0].toString(),
-      receiverId: "",
-      content: args[1].toString(),
+      receiverId: args[1].toString(),
+      content: args[2].toString(),
+      isRead: false
     );
 
   }

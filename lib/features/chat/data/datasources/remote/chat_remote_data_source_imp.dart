@@ -14,6 +14,7 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   final onlineUser = StreamController<Set<String>>.broadcast();
   final offlineUser = StreamController<Set<String>>.broadcast();
   final onlineUserController = StreamController<List<String>>.broadcast();
+  final readController = StreamController<String>.broadcast();
 
   final Set<String> _onlineUsers = {};
   @override
@@ -64,6 +65,12 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       onlineUserController.add(users);
     });
 
+    connection.on("ConversationRead", (args) {
+      final userId = args![0].toString();
+
+      readController.add(userId);
+    });
+
     await connection.start();
   }
 
@@ -90,4 +97,12 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
 
   @override
   Stream<List<String>> get onlineUsers => onlineUserController.stream;
+
+  @override
+  Stream<String> get conversationRead => throw readController.stream;
+
+  @override
+  Future<void> markAsRead(String senderId) async {
+    await connection.invoke("MarkConversationAsRead", args: [senderId]);
+  }
 }

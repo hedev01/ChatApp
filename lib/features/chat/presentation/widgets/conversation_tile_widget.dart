@@ -83,12 +83,20 @@ class ConversationTile extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 6),
+                  BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                      final lastMessage = state.lastMessages[user.userId];
 
-                  Text(
-                    'Chetory',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                      return Text(
+                        lastMessage?.content ?? "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 14,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -104,23 +112,30 @@ class ConversationTile extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                //if (chat['unread'] > 0)
-                Container(
-                  width: 24,
-                  height: 24,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Color(0xff4F8CFF),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '2',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) {
+                    final unread = state.unreadCount[user.userId] ?? 0;
+
+                    if (unread == 0) return const SizedBox();
+
+                    return Container(
+                      width: 24,
+                      height: 24,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff4F8CFF),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        unread.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
