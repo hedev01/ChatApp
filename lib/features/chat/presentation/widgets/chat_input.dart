@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 class ChatInput extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
+  final void Function(String)? onChanged;
 
-  const ChatInput({super.key, required this.controller, required this.onSend});
+  const ChatInput({
+    super.key,
+    required this.controller,
+    required this.onSend,
+    this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +59,7 @@ class ChatInput extends StatelessWidget {
                       hint: "Write Now...",
                       controller: controller,
                       focusedBorder: InputBorder.none,
+                      onChanged: onChanged,
                     ),
                   ),
 

@@ -6,7 +6,11 @@ import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/stop_typing_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/user_is_typing_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/user_stop_typing_usecase.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +25,10 @@ class ChatCubit extends Cubit<ChatState> {
   final OfflineUsecase offlineUsecase;
   final OnlineUsersUsecase onlineUsersUsecase;
   final MarkAsReadUsecase markAsReadUsecase;
+  final UserIsTypingUsecase userIsTypingUsecase;
+  final UserStopTypingUsecase userStopTypingUsecase;
+  final StartTypingUsecase startTypingUsecase;
+  final StopTypingUsecase stopTypingUsecase;
 
   ChatCubit(
     this.connectChat,
@@ -31,6 +39,10 @@ class ChatCubit extends Cubit<ChatState> {
     this.offlineUsecase,
     this.onlineUsersUsecase,
     this.markAsReadUsecase,
+    this.userIsTypingUsecase,
+    this.userStopTypingUsecase,
+    this.startTypingUsecase,
+    this.stopTypingUsecase,
   ) : super(const ChatState());
 
   Future<void> connect(String userId) async {
@@ -88,14 +100,32 @@ class ChatCubit extends Cubit<ChatState> {
         ),
       );
     });
+    userIsTypingUsecase().listen((senderId) {
+      final map = Map<String, bool>.from(state.isTyping);
+
+      map[senderId] = true;
+
+      emit(state.copyWith(isTyping: map));
+    });
+
+    userStopTypingUsecase().listen((senderId) {
+      final map = Map<String, bool>.from(state.isTyping);
+
+      map[senderId] = false;
+
+      emit(state.copyWith(isTyping: map));
+    });
   }
 
   Future<void> send(String text, String senderId, String receiverId) async {
+    final now = DateTime.now();
     final message = MessageEntity(
       senderId: senderId,
       receiverId: receiverId,
       content: text,
       isRead: false,
+      sentAt: now,
+      sentAtTime: Helper.convertDateTimeToTime(now.toIso8601String())
     );
 
     await sendMessage(message);
@@ -141,6 +171,16 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(state.copyWith(messages: updatedMessages, unreadCount: updatedUnread));
   }
+
+  Future<void> startTyping(String receiverId) async {
+    await startTypingUsecase(receiverId);
+  }
+
+  Future<void> stopTyping(String receiverId) async {
+
+  await stopTypingUsecase(receiverId);
+
+}
 
   Future<void> stop() async {
     await stopChatUsecase();

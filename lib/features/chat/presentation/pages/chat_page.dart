@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
+import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +28,9 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final controller = TextEditingController();
   late ChatCubit chatCubit;
+  Timer? _typingTimer;
+
+  bool _typing = false;
   @override
   void initState() {
     super.initState();
@@ -46,11 +52,43 @@ class _ChatPageState extends State<ChatPage> {
       body: SafeArea(
         child: Column(
           children: [
-            ChatAppBar(
-              title: "${widget.chatItem.firstName} ${widget.chatItem.lastName}",
-              des: "Online",
-              firstIcon: Icons.call,
-              twoIcon: Icons.video_call,
+            BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                final isOnline =
+                    state.isOnline[widget.chatItem.userId] ?? false;
+
+                final isTyping =
+                    state.isTyping[widget.chatItem.userId] ?? false;
+
+                return ChatAppBar(
+                  title:
+                      "${widget.chatItem.firstName} ${widget.chatItem.lastName}",
+                  desWidget: isTyping
+                      ? const TypingIndicator(text: "Typing...")
+                      : Row(
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: isOnline ? Colors.green : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              isOnline ? "Online" : "Offline",
+                              style: TextStyle(
+                                color: isOnline ? Colors.green : Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                  firstIcon: Icons.call,
+                  twoIcon: Icons.video_call,
+                );
+              },
             ),
             Padding(
               padding: EdgeInsetsGeometry.symmetric(
@@ -88,6 +126,21 @@ class _ChatPageState extends State<ChatPage> {
 
             ChatInput(
               controller: controller,
+              onChanged: (value) {
+                if (!_typing) {
+                  _typing = true;
+
+                  context.read<ChatCubit>().startTyping(widget.chatItem.userId);
+                }
+
+                _typingTimer?.cancel();
+
+                _typingTimer = Timer(const Duration(seconds: 2), () {
+                  _typing = false;
+
+                  context.read<ChatCubit>().stopTyping(widget.chatItem.userId);
+                });
+              },
               onSend: () async {
                 chatCubit.send(
                   controller.text,
@@ -95,11 +148,30 @@ class _ChatPageState extends State<ChatPage> {
                   widget.chatItem.userId,
                 );
                 controller.clear();
+
+                if (_typing) {
+                  _typing = false;
+
+                  _typingTimer?.cancel();
+
+                  context.read<ChatCubit>().stopTyping(widget.chatItem.userId);
+                }
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    if (_typing) {
+      context.read<ChatCubit>().stopTyping(widget.chatItem.userId);
+    }
+
+    _typingTimer?.cancel();
+    chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
+    super.dispose();
   }
 }

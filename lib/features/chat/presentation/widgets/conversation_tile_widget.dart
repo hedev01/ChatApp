@@ -1,6 +1,7 @@
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
+import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,7 +87,10 @@ class ConversationTile extends StatelessWidget {
                   BlocBuilder<ChatCubit, ChatState>(
                     builder: (context, state) {
                       final lastMessage = state.lastMessages[user.userId];
-
+                      final isTyping = state.isTyping[user.userId] ?? false;
+                      if(isTyping){
+                        return TypingIndicator(text: "Typing...",);
+                      }
                       return Text(
                         lastMessage?.content ?? "",
                         maxLines: 1,
@@ -105,9 +109,15 @@ class ConversationTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '10:20',
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                BlocBuilder<ChatCubit , ChatState>(
+                  builder: (context, state) {
+                    final sentAt = state.lastMessages[user.userId]?.sentAtTime ?? "";
+                    return Text(
+                    sentAt,
+                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                  );
+                  },
+                  
                 ),
 
                 const SizedBox(height: 10),

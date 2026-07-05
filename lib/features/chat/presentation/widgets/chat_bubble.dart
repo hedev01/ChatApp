@@ -48,16 +48,13 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
 
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 6),
-          //   child: Text(
-          //     message.time,
-          //     style: const TextStyle(
-          //       color: Colors.grey,
-          //       fontSize: 11,
-          //     ),
-          //   ),
-          // )
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Text(
+              message.sentAtTime,
+              style: const TextStyle(color: Colors.grey, fontSize: 11),
+            ),
+          ),
         ],
       ),
     );

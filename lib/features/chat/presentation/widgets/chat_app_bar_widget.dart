@@ -1,12 +1,18 @@
+import 'package:chat_app/global_widget/circle_button.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../global_widget/circle_button.dart';
 
 class ChatAppBar extends StatelessWidget {
   final String title;
-  final String des;
-  final IconData firstIcon , twoIcon;
-  const ChatAppBar({super.key, required this.title, required this.des,required this.firstIcon , required this.twoIcon});
+  final Widget desWidget;
+  final IconData firstIcon, twoIcon;
+
+  const ChatAppBar({
+    super.key,
+    required this.title,
+    required this.desWidget,
+    required this.firstIcon,
+    required this.twoIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +42,21 @@ class ChatAppBar extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                SizedBox(height: 4),
-                Text(des, style: TextStyle(color: Colors.grey, fontSize: 14)),
+                const SizedBox(height: 4),
+
+                desWidget,
               ],
             ),
           ),
+
           CircleButton(icon: firstIcon),
           const SizedBox(width: 12),
           CircleButton(icon: twoIcon),
-
-          const SizedBox(height: 20),
         ],
       ),
     );

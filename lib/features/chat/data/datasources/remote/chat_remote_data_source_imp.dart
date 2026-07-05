@@ -15,6 +15,8 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   final offlineUser = StreamController<Set<String>>.broadcast();
   final onlineUserController = StreamController<List<String>>.broadcast();
   final readController = StreamController<String>.broadcast();
+  final userTypingController = StreamController<String>.broadcast();
+  final userStopTypingController = StreamController<String>.broadcast();
 
   final Set<String> _onlineUsers = {};
   @override
@@ -71,6 +73,18 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       readController.add(userId);
     });
 
+    connection.on("UserStartedTyping", (args) {
+      final senderId = args![0].toString();
+
+      userTypingController.add(senderId);
+    });
+
+    connection.on("UserStoppedTyping", (args) {
+      final senderId = args![0].toString();
+
+      userStopTypingController.add(senderId);
+    });
+
     await connection.start();
   }
 
@@ -99,10 +113,26 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   Stream<List<String>> get onlineUsers => onlineUserController.stream;
 
   @override
-  Stream<String> get conversationRead => throw readController.stream;
+  Stream<String> get conversationRead => readController.stream;
 
   @override
   Future<void> markAsRead(String senderId) async {
     await connection.invoke("MarkConversationAsRead", args: [senderId]);
+  }
+
+  @override
+  Stream<String> get userStopTyping => userStopTypingController.stream;
+
+  @override
+  Stream<String> get userTyping => userTypingController.stream;
+
+  @override
+  Future<void> startTyping(String receiverId) async {
+    await connection.invoke("StartTyping", args: [receiverId]);
+  }
+
+  @override
+  Future<void> stopTyping(String receiverId)async {
+   await connection.invoke("StopTyping", args: [receiverId]);
   }
 }

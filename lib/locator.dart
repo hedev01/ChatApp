@@ -19,7 +19,11 @@ import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/stop_typing_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/user_is_typing_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/user_stop_typing_usecase.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -49,6 +53,10 @@ void setup() {
   locator.registerSingleton(OfflineUsecase(locator.get()));
   locator.registerSingleton(OnlineUsersUsecase(locator.get()));
   locator.registerSingleton(MarkAsReadUsecase(locator.get()));
+  locator.registerSingleton(UserIsTypingUsecase(locator.get()));
+  locator.registerSingleton(UserStopTypingUsecase(locator.get()));
+  locator.registerSingleton(StartTypingUsecase(locator.get()));
+  locator.registerSingleton(StopTypingUsecase(locator.get()));
 
   ///Bloc
   locator.registerSingleton(RegisterBloc(locator()));
@@ -63,7 +71,11 @@ void setup() {
       locator.get(),
       locator.get(),
       locator.get(),
-      locator.get()
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
+      locator.get(),
     ),
   );
 }

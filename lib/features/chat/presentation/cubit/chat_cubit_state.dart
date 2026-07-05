@@ -5,20 +5,29 @@ class ChatState {
   final Map<String, bool> isOnline;
   final Map<String, int> unreadCount;
   final Map<String, MessageEntity> lastMessages;
+  final Map<String, bool> isTyping;
 
-  const ChatState({this.messages = const {}, this.isOnline = const {} , this.unreadCount = const {} , this.lastMessages = const {}});
+  const ChatState({
+    this.messages = const {},
+    this.isOnline = const {},
+    this.unreadCount = const {},
+    this.lastMessages = const {},
+    this.isTyping = const {},
+  });
 
   ChatState copyWith({
     Map<String, List<MessageEntity>>? messages,
     Map<String, bool>? isOnline,
     Map<String, int>? unreadCount,
-    Map<String, MessageEntity>? lastMessages
+    Map<String, MessageEntity>? lastMessages,
+    Map<String, bool>? isTyping,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
       isOnline: isOnline ?? this.isOnline,
       unreadCount: unreadCount ?? this.unreadCount,
-      lastMessages: lastMessages ?? this.lastMessages
+      lastMessages: lastMessages ?? this.lastMessages,
+      isTyping: isTyping ?? this.isTyping,
     );
   }
 }
