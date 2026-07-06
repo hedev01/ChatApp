@@ -8,13 +8,15 @@ import 'package:chat_app/features/chat/data/models/message_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:signalr_netcore/signalr_client.dart';
 
+import '../../../../../core/helper/helper.dart';
+
 class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   late HubConnection connection;
   final controller = StreamController<MessageModel>.broadcast();
   final onlineUser = StreamController<Set<String>>.broadcast();
   final offlineUser = StreamController<Set<String>>.broadcast();
   final onlineUserController = StreamController<List<String>>.broadcast();
-  final readController = StreamController<String>.broadcast();
+  final readController = StreamController<List<Object?>>.broadcast();
   final userTypingController = StreamController<String>.broadcast();
   final userStopTypingController = StreamController<String>.broadcast();
 
@@ -68,9 +70,9 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
     });
 
     connection.on("ConversationRead", (args) {
-      final userId = args![0].toString();
+   
 
-      readController.add(userId);
+      readController.add(args ?? []);
     });
 
     connection.on("UserStartedTyping", (args) {
@@ -113,7 +115,7 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   Stream<List<String>> get onlineUsers => onlineUserController.stream;
 
   @override
-  Stream<String> get conversationRead => readController.stream;
+  Stream<List<Object?>> get conversationRead => readController.stream;
 
   @override
   Future<void> markAsRead(String senderId) async {

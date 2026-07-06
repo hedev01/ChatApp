@@ -17,6 +17,7 @@ import 'package:chat_app/features/chat/domain/usecases/mark_as_read_usecase.dart
 import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
@@ -53,6 +54,7 @@ void setup() {
   locator.registerSingleton(OfflineUsecase(locator.get()));
   locator.registerSingleton(OnlineUsersUsecase(locator.get()));
   locator.registerSingleton(MarkAsReadUsecase(locator.get()));
+  locator.registerSingleton(ReadUsecase(locator.get()));
   locator.registerSingleton(UserIsTypingUsecase(locator.get()));
   locator.registerSingleton(UserStopTypingUsecase(locator.get()));
   locator.registerSingleton(StartTypingUsecase(locator.get()));
@@ -76,6 +78,7 @@ void setup() {
       locator.get(),
       locator.get(),
       locator.get(),
+      locator.get()
     ),
   );
 }

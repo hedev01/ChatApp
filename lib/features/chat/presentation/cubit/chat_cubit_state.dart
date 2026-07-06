@@ -6,6 +6,7 @@ class ChatState {
   final Map<String, int> unreadCount;
   final Map<String, MessageEntity> lastMessages;
   final Map<String, bool> isTyping;
+  final Map<String , bool> seen;
 
   const ChatState({
     this.messages = const {},
@@ -13,6 +14,7 @@ class ChatState {
     this.unreadCount = const {},
     this.lastMessages = const {},
     this.isTyping = const {},
+    this.seen = const {}
   });
 
   ChatState copyWith({
@@ -21,6 +23,7 @@ class ChatState {
     Map<String, int>? unreadCount,
     Map<String, MessageEntity>? lastMessages,
     Map<String, bool>? isTyping,
+    Map<String , bool>? seen
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -28,6 +31,7 @@ class ChatState {
       unreadCount: unreadCount ?? this.unreadCount,
       lastMessages: lastMessages ?? this.lastMessages,
       isTyping: isTyping ?? this.isTyping,
+      seen: seen ?? this.seen
     );
   }
 }

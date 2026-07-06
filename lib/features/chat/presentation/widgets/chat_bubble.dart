@@ -50,9 +50,23 @@ class ChatBubble extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              message.sentAtTime,
-              style: const TextStyle(color: Colors.grey, fontSize: 11),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  message.sentAtTime,
+                  style: const TextStyle(color: Colors.grey, fontSize: 11),
+                ),
+
+                if (isMe) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    message.isRead ? Icons.done_all : Icons.done,
+                    size: 15,
+                    color: message.isRead ? Colors.blue : Colors.grey,
+                  ),
+                ],
+              ],
             ),
           ),
         ],

@@ -14,7 +14,7 @@ abstract class ChatRemoteDataSource {
   Stream<Set<String>> get online;
   Stream<Set<String>> get offline;
   Stream<List<String>> get onlineUsers;
-  Stream<String> get conversationRead;
+  Stream<List<Object?>> get conversationRead;
   Stream<String> get userTyping;
   Stream<String> get userStopTyping;
 }

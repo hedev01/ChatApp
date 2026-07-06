@@ -39,6 +39,7 @@ void main() async {
             locator.get(),
             locator.get(),
             locator.get(),
+            locator.get()
           ),
         ),
       ],

@@ -11,7 +11,7 @@ abstract class ChatRepository {
   Stream<Set<String>> online();
   Stream<Set<String>> offline();
   Stream<List<String>> onlineUsers();
-  Stream<String> read();
+  Stream<List<Object?>> read();
   Stream<String> userIsTyping();
   Stream<String> userStopTyping();
   Future<void> startTyping(String receiverId);

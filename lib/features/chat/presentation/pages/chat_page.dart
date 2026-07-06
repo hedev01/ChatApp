@@ -44,6 +44,7 @@ class _ChatPageState extends State<ChatPage> {
     chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
   }
 
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

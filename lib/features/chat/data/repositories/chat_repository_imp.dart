@@ -60,7 +60,7 @@ class ChatRepositoryImp extends ChatRepository {
   }
 
   @override
-  Stream<String> read() {
+  Stream<List<Object?>> read() {
     return remote.conversationRead;
   }
 

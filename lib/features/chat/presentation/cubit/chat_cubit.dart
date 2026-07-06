@@ -4,6 +4,7 @@ import 'package:chat_app/features/chat/domain/usecases/mark_as_read_usecase.dart
 import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
@@ -25,6 +26,7 @@ class ChatCubit extends Cubit<ChatState> {
   final OfflineUsecase offlineUsecase;
   final OnlineUsersUsecase onlineUsersUsecase;
   final MarkAsReadUsecase markAsReadUsecase;
+  final ReadUsecase readUsecase;
   final UserIsTypingUsecase userIsTypingUsecase;
   final UserStopTypingUsecase userStopTypingUsecase;
   final StartTypingUsecase startTypingUsecase;
@@ -43,6 +45,7 @@ class ChatCubit extends Cubit<ChatState> {
     this.userStopTypingUsecase,
     this.startTypingUsecase,
     this.stopTypingUsecase,
+    this.readUsecase,
   ) : super(const ChatState());
 
   Future<void> connect(String userId) async {
@@ -115,6 +118,31 @@ class ChatCubit extends Cubit<ChatState> {
 
       emit(state.copyWith(isTyping: map));
     });
+
+    readUsecase().listen((args) {
+      final receiverId = args[0]!.toString();
+      final senderId = args[1]!.toString();
+
+      final conversationId = Helper.getConversationId(receiverId, senderId);
+
+      final updatedMessages = Map<String, List<MessageEntity>>.from(
+        state.messages,
+      );
+
+      final conversation = updatedMessages[conversationId];
+
+      if (conversation == null) return;
+
+      updatedMessages[conversationId] = conversation.map((message) {
+        print(message.senderId);
+        if (message.senderId == senderId && !message.isRead) {
+          return message.copyWith(isRead: true);
+        }
+        return message;
+      }).toList();
+
+      emit(state.copyWith(messages: updatedMessages));
+    });
   }
 
   Future<void> send(String text, String senderId, String receiverId) async {
@@ -125,7 +153,7 @@ class ChatCubit extends Cubit<ChatState> {
       content: text,
       isRead: false,
       sentAt: now,
-      sentAtTime: Helper.convertDateTimeToTime(now.toIso8601String())
+      sentAtTime: Helper.convertDateTimeToTime(now.toIso8601String()),
     );
 
     await sendMessage(message);
@@ -177,10 +205,8 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> stopTyping(String receiverId) async {
-
-  await stopTypingUsecase(receiverId);
-
-}
+    await stopTypingUsecase(receiverId);
+  }
 
   Future<void> stop() async {
     await stopChatUsecase();
