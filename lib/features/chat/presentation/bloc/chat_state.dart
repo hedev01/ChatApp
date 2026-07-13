@@ -1,4 +1,4 @@
-import 'package:chat_app/features/chat/domain/entities/get_user_entity.dart';
+import 'package:chat_app/features/user/domain/entity/get_user_entity.dart';
 
 enum ChatStatus { initial, loading, success, failure }
 

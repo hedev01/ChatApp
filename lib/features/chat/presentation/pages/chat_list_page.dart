@@ -3,9 +3,15 @@ import 'package:chat_app/features/chat/presentation/bloc/chat_event.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_shimmer_widget.dart';
+import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
+import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
+import 'package:chat_app/features/user/presentation/bloc/user_event.dart';
+import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../user/presentation/bloc/user_state.dart';
 import '../widgets/conversation_tile_widget.dart';
 
 class ChatListPage extends StatefulWidget {
@@ -29,14 +35,38 @@ class _ChatListPageState extends State<ChatListPage> {
       body: SafeArea(
         child: Column(
           children: [
-            ChatAppBar(
-              title: "Me",
-              desWidget: Text(
-                "Your Conversations",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+            BlocListener<UserBloc, UserState>(
+              listener: (context, state) {
+                if (state.userStatus == UserStatus.success) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return ProfilePage(user: state.userDataEntity!);
+                      },
+                    ),
+                  );
+                }
+
+                if (state.userStatus == UserStatus.failure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.error ?? "Error")),
+                  );
+                }
+              },
+
+              child: ChatAppBar(
+                title: "Me",
+                desWidget: Text(
+                  "Your Conversations",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                firstIcon: Icons.search,
+                twoIcon: Icons.add,
+
+                onPressed: () {
+                  context.read<UserBloc>().add(GetUser());
+                },
               ),
-              firstIcon: Icons.search,
-              twoIcon: Icons.add,
             ),
             Expanded(
               child: BlocBuilder<ChatBloc, ChatState>(

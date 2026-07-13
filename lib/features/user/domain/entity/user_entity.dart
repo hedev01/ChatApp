@@ -11,11 +11,13 @@ class UserDataEntity {
   final String lastName;
   final String email;
   final String accessToken;
+  final String avatarUrl;
   UserDataEntity({
     required this.userId,
     required this.firstName,
     required this.lastName,
     required this.email,
     required this.accessToken,
+    required this.avatarUrl
   });
 }

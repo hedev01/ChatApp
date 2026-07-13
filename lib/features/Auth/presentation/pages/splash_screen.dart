@@ -1,6 +1,6 @@
-import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
+import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkUser() async {
      chatCubit = context.read<ChatCubit>();
-    AuthUseCase authUseCase = AuthUseCase(locator.get());
+    GetUserUsecase authUseCase = GetUserUsecase(locator.get());
     try {
-      final user = await authUseCase.getUser();
+      final user = await authUseCase();
 
       if (user.userId.isNotEmpty) {
         await chatCubit.connect(user.userId);

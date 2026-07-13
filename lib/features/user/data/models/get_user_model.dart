@@ -1,5 +1,5 @@
-import 'package:chat_app/features/Auth/domain/entities/user_entity.dart';
-import 'package:chat_app/features/chat/domain/entities/get_user_entity.dart';
+import 'package:chat_app/features/user/domain/entity/user_entity.dart';
+import 'package:chat_app/features/user/domain/entity/get_user_entity.dart';
 
 class GetUserModel extends GetUserEntity {
   GetUserModel({required super.isSuccess, super.data, super.errorMessage});
@@ -23,6 +23,7 @@ class GetUserDataModel extends GetUserDataEntity {
     required super.firstName,
     required super.lastName,
     required super.email,
+    required super.avatarUrl
   });
 
   factory GetUserDataModel.fromEntity(UserDataEntity entity) {
@@ -31,6 +32,7 @@ class GetUserDataModel extends GetUserDataEntity {
       firstName: entity.firstName,
       lastName: entity.lastName,
       email: entity.email,
+      avatarUrl: entity.avatarUrl
     );
   }
 
@@ -40,6 +42,7 @@ class GetUserDataModel extends GetUserDataEntity {
       firstName: json["firstName"],
       lastName: json["lastName"],
       email: json["email"],
+      avatarUrl: json["avatarUrl"] ?? ""
     );
   }
 
@@ -49,6 +52,7 @@ class GetUserDataModel extends GetUserDataEntity {
       firstName: json["firstName"],
       lastName: json["lastName"],
       email: json["email"],
+      avatarUrl: json["avatarUrl"] ?? ""
     );
   }
   

@@ -9,10 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helper/helper.dart';
-import '../../../../locator.dart';
-import '../../../Auth/domain/entities/user_entity.dart';
-import '../../../Auth/domain/usecases/auth_usecase.dart';
-import '../../domain/entities/get_user_entity.dart';
+import '../../../user/domain/entity/get_user_entity.dart';
 import '../widgets/chat_bubble.dart';
 import '../widgets/chat_input.dart';
 
@@ -43,7 +40,6 @@ class _ChatPageState extends State<ChatPage> {
     chatCubit = context.read<ChatCubit>();
     chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +84,7 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                   firstIcon: Icons.call,
                   twoIcon: Icons.video_call,
+              
                 );
               },
             ),

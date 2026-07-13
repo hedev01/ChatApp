@@ -1,11 +1,13 @@
 import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_event.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_state.dart';
+import 'package:chat_app/features/user/domain/usecase/save_user_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthUseCase useCase;
-  LoginBloc(this.useCase) : super(LoginState()) {
+   final SaveUserUsecase saveUserUsecase;
+  LoginBloc(this.useCase , this.saveUserUsecase) : super(LoginState()) {
     on<LoginSubmitted>(_onLogin);
   }
 
@@ -15,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final user = await useCase.login(event.email, event.password);
       if (user.isSuccess!) {
-        await useCase.saveUser(user.data!);
+        await saveUserUsecase(user.data!);
         emit(state.copyWith(user: user, status: LoginStatus.success));
       } else {
         emit(

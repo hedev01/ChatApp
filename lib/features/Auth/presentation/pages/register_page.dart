@@ -1,5 +1,4 @@
 import 'package:chat_app/core/theme/app_colors.dart';
-import 'package:chat_app/features/Auth/domain/entities/user_entity.dart';
 import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_event.dart';

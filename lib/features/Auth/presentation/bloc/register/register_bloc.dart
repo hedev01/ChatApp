@@ -2,11 +2,13 @@ import 'package:chat_app/features/Auth/domain/entities/register_request_entity.d
 import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_event.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_state.dart';
+import 'package:chat_app/features/user/domain/usecase/save_user_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AuthUseCase authUseCase;
-  RegisterBloc(this.authUseCase) : super(RegisterState()) {
+  final SaveUserUsecase saveUserUsecase;
+  RegisterBloc(this.authUseCase , this.saveUserUsecase) : super(RegisterState()) {
     on<RegisterSubmitted>(_onRegister);
   }
   Future<void> _onRegister(
@@ -32,7 +34,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           ),
         );
       } else {
-        await authUseCase.saveUser(user.data!);
+        await saveUserUsecase(user.data!);
         emit(state.copyWith(status: RegisterStatus.success, user: user));
       }
     } catch (e) {

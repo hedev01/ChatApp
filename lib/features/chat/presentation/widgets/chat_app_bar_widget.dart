@@ -5,6 +5,7 @@ class ChatAppBar extends StatelessWidget {
   final String title;
   final Widget desWidget;
   final IconData firstIcon, twoIcon;
+  final void Function()? onPressed;
 
   const ChatAppBar({
     super.key,
@@ -12,6 +13,7 @@ class ChatAppBar extends StatelessWidget {
     required this.desWidget,
     required this.firstIcon,
     required this.twoIcon,
+    this.onPressed,
   });
 
   @override
@@ -27,10 +29,13 @@ class ChatAppBar extends StatelessWidget {
               color: const Color(0xffEEF4FF),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Icon(
-              Icons.smart_toy_rounded,
-              color: Color(0xff4F8CFF),
-              size: 30,
+            child: IconButton(
+              icon: Icon(
+                Icons.smart_toy_rounded,
+                color: Color(0xff4F8CFF),
+                size: 30,
+              ),
+              onPressed: onPressed,
             ),
           ),
 

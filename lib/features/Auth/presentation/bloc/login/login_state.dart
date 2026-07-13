@@ -1,5 +1,4 @@
-import 'package:chat_app/features/Auth/domain/entities/user_entity.dart';
-import 'package:flutter/material.dart';
+import 'package:chat_app/features/user/domain/entity/user_entity.dart';
 
 enum LoginStatus { initial, loading, success, failure }
 

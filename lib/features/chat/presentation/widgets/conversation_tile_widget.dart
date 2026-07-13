@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
@@ -5,7 +6,7 @@ import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_wid
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/get_user_entity.dart';
+import '../../../user/domain/entity/get_user_entity.dart';
 
 class ConversationTile extends StatelessWidget {
   final GetUserDataEntity user;
@@ -38,14 +39,19 @@ class ConversationTile extends StatelessWidget {
                 CircleAvatar(
                   radius: 28,
                   backgroundColor: const Color(0xffEEF4FF),
-                  child: Text(
-                    "${user.firstName.substring(0, 1)}${user.lastName.substring(0, 1)}",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Color(0xff4F8CFF),
-                    ),
-                  ),
+                  backgroundImage: user.avatarUrl.isNotEmpty
+                      ? NetworkImage(Constans.baseUrl + user.avatarUrl)
+                      : null,
+                  child: user.avatarUrl.isEmpty
+                      ? Text(
+                          "${user.firstName.substring(0, 1)}${user.lastName.substring(0, 1)}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Color(0xff4F8CFF),
+                          ),
+                        )
+                      : null,
                 ),
 
                 BlocBuilder<ChatCubit, ChatState>(
@@ -88,8 +94,8 @@ class ConversationTile extends StatelessWidget {
                     builder: (context, state) {
                       final lastMessage = state.lastMessages[user.userId];
                       final isTyping = state.isTyping[user.userId] ?? false;
-                      if(isTyping){
-                        return TypingIndicator(text: "Typing...",);
+                      if (isTyping) {
+                        return TypingIndicator(text: "Typing...");
                       }
                       return Text(
                         lastMessage?.content ?? "",
@@ -109,15 +115,18 @@ class ConversationTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                BlocBuilder<ChatCubit , ChatState>(
+                BlocBuilder<ChatCubit, ChatState>(
                   builder: (context, state) {
-                    final sentAt = state.lastMessages[user.userId]?.sentAtTime ?? "";
+                    final sentAt =
+                        state.lastMessages[user.userId]?.sentAtTime ?? "";
                     return Text(
-                    sentAt,
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-                  );
+                      sentAt,
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 12,
+                      ),
+                    );
                   },
-                  
                 ),
 
                 const SizedBox(height: 10),

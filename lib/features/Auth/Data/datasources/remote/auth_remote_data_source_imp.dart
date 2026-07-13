@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:chat_app/features/Auth/Data/datasources/remote/auth_remote_data_source.dart';
 
 import '../../../../../core/constans/constans.dart';
-import '../../models/user_model.dart';
+import '../../../../user/data/models/user_model.dart';
 import '../../models/user_request.dart';
 import 'package:http/http.dart' as http;
 
