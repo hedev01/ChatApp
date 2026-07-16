@@ -5,6 +5,7 @@ import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
+import 'package:chat_app/global_widget/avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -84,7 +85,11 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                   firstIcon: Icons.call,
                   twoIcon: Icons.video_call,
-              
+                  widget: Avatar(
+                    avatarUrl: widget.chatItem.avatarUrl,
+                    firstName: widget.chatItem.firstName,
+                    lastName: widget.chatItem.lastName,
+                  ),
                 );
               },
             ),
@@ -169,7 +174,7 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     _typingTimer?.cancel();
-    chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
+    // chatCubit.markAsRead(widget.chatItem.userId, widget.userId);
     super.dispose();
   }
 }

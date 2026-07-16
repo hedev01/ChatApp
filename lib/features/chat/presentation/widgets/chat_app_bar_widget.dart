@@ -6,6 +6,7 @@ class ChatAppBar extends StatelessWidget {
   final Widget desWidget;
   final IconData firstIcon, twoIcon;
   final void Function()? onPressed;
+  final Widget? widget;
 
   const ChatAppBar({
     super.key,
@@ -13,6 +14,7 @@ class ChatAppBar extends StatelessWidget {
     required this.desWidget,
     required this.firstIcon,
     required this.twoIcon,
+     this.widget,
     this.onPressed,
   });
 
@@ -22,22 +24,23 @@ class ChatAppBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
       child: Row(
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xffEEF4FF),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: IconButton(
-              icon: Icon(
-                Icons.smart_toy_rounded,
-                color: Color(0xff4F8CFF),
-                size: 30,
+          widget ??
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: const Color(0xffEEF4FF),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.smart_toy_rounded,
+                    color: Color(0xff4F8CFF),
+                    size: 30,
+                  ),
+                  onPressed: onPressed,
+                ),
               ),
-              onPressed: onPressed,
-            ),
-          ),
 
           const SizedBox(width: 14),
 

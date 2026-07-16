@@ -1,3 +1,6 @@
+import 'package:chat_app/core/enums/messages_type.dart';
+import 'package:signalr_netcore/ihub_protocol.dart';
+
 class MessageEntity {
   final String senderId;
   final String receiverId;
@@ -5,13 +8,19 @@ class MessageEntity {
   final bool isRead;
   final DateTime sentAt;
   final String sentAtTime;
+  final MessagesType type;
+  final String? fileName;
+  final int? fileSize;
   MessageEntity({
     required this.senderId,
     required this.receiverId,
     required this.content,
     required this.isRead,
     required this.sentAt,
-    required this.sentAtTime
+    required this.sentAtTime,
+     this.type = MessagesType.text,
+     this.fileName,
+     this.fileSize
   });
 
   MessageEntity copyWith({
@@ -20,7 +29,10 @@ class MessageEntity {
     String? content,
     bool? isRead,
     DateTime? sentAt,
-    String? sentAtTime
+    String? sentAtTime,
+    MessagesType? type,
+    String? fileName,
+    int? fileSize
   }) {
     return MessageEntity(
       senderId: senderId ?? this.senderId,
@@ -28,7 +40,10 @@ class MessageEntity {
       content: content ?? this.content,
       isRead: isRead ?? this.isRead,
       sentAt: sentAt ?? this.sentAt,
-      sentAtTime: sentAtTime ?? this.sentAtTime
+      sentAtTime: sentAtTime ?? this.sentAtTime,
+      type: type ?? this.type,
+      fileName: fileName ?? this.fileName,
+      fileSize: fileSize ?? this.fileSize
     );
   }
 }

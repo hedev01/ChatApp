@@ -19,7 +19,7 @@ class UserDataModel extends UserDataEntity {
     required super.lastName,
     required super.email,
     required super.accessToken,
-    required super.avatarUrl
+    required super.avatarUrl,
   });
 
   factory UserDataModel.fromEntity(UserDataEntity entity) {
@@ -29,7 +29,7 @@ class UserDataModel extends UserDataEntity {
       lastName: entity.lastName,
       email: entity.email,
       accessToken: entity.accessToken,
-      avatarUrl: entity.avatarUrl
+      avatarUrl: entity.avatarUrl,
     );
   }
 
@@ -40,21 +40,21 @@ class UserDataModel extends UserDataEntity {
       lastName: json["lastName"],
       email: json["email"],
       accessToken: json["accessToken"],
-      avatarUrl: json["avatarUrl"] ?? ""
+      avatarUrl: json["avatarUrl"] ?? "",
     );
   }
 
-   factory UserDataModel.fromHive(Map<dynamic, dynamic> json) {
+  factory UserDataModel.fromHive(Map<dynamic, dynamic> json) {
     return UserDataModel(
       userId: json["userId"],
       firstName: json["firstName"],
       lastName: json["lastName"],
       email: json["email"],
       accessToken: json["accessToken"],
-      avatarUrl: json["avatarUrl"] ?? ""
+      avatarUrl: json["avatarUrl"] ?? "",
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       "userId": userId,
@@ -62,6 +62,7 @@ class UserDataModel extends UserDataEntity {
       "lastName": lastName,
       "email": email,
       "accessToken": accessToken,
+      "avatarUrl": avatarUrl,
     };
-    }
+  }
 }

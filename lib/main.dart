@@ -7,6 +7,7 @@ import 'package:chat_app/features/Auth/presentation/pages/splash_screen.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
 import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,11 @@ void main() async {
           ),
         ),
         BlocProvider(create: (_) => UserBloc(locator.get())),
-        BlocProvider(create: (_) => ProfileBloc(locator.get(), locator.get())),
+        BlocProvider(
+          create: (_) =>
+              ProfileBloc(locator.get(), locator.get(), locator.get()),
+        ),
+        BlocProvider(create: (context) => UploadFileBloc(locator.get())),
       ],
       child: const MyApp(),
     ),
@@ -59,7 +64,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      //   darkTheme: AppTheme.darkTheme,
       home: SplashScreen(),
     );
   }

@@ -6,4 +6,6 @@ abstract class UserRepository {
   Future<GetUserEntity> getUsers(String userId);
   Future<void> saveUser(UserDataEntity user);
   Future<UserDataEntity> getUser();
+  Future<void> delete();
+  Future<void> updateAvatar(String avatarUrl);
 }

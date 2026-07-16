@@ -19,4 +19,21 @@ class UserLocalDataSourceImp extends UserLocalDataSource {
     var user = box.get('user');
     return UserDataModel.fromHive(user);
   }
+
+  @override
+  Future<void> delete() async {
+    final box = await Hive.openBox(boxName);
+
+    box.delete('user');
+  }
+
+  @override
+  Future<void> updateAvatar(String avatarUrl) async {
+    final box = await Hive.openBox(boxName);
+
+    var user = box.get('user');
+
+    user["avatarUrl"] = avatarUrl;
+    await box.put('user', user);
+  }
 }

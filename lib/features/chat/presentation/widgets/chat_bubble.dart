@@ -1,4 +1,7 @@
+import 'package:chat_app/core/enums/messages_type.dart';
+import 'package:chat_app/features/chat/presentation/widgets/file_message.dart';
 import 'package:flutter/material.dart';
+import 'package:signalr_netcore/ihub_protocol.dart';
 import '../../domain/entities/message_entity.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -38,14 +41,7 @@ class ChatBubble extends StatelessWidget {
               ),
             ),
 
-            child: Text(
-              message.content,
-
-              style: TextStyle(
-                color: isMe ? Colors.black87 : Colors.white,
-                fontSize: 16,
-              ),
-            ),
+            child: _buildMessageContent(isMe),
           ),
 
           Padding(
@@ -72,5 +68,27 @@ class ChatBubble extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildMessageContent(bool isMe) {
+    switch (message.type) {
+      case MessagesType.text:
+        return Text(
+          message.content,
+          style: TextStyle(
+            color: isMe ? Colors.black87 : Colors.white,
+            fontSize: 16,
+          ),
+        );
+
+      case MessagesType.file:
+        return FileMessage(message: message, isMe: isMe);
+
+      case MessagesType.image:
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(message.content, width: 220, fit: BoxFit.cover),
+        );
+    }
   }
 }

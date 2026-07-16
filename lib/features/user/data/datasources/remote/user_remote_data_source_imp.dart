@@ -12,7 +12,7 @@ class UserRemoteDataSourceImp extends UserRemoteDataSource {
     try {
       final response = await http
           .get(
-            Uri.parse("${Constans.baseUrl}/api/User/GetUsers?userId=$userId"),
+            Uri.parse("${Constans.baseUrl}/api/User/GetUsers"),
           )
           .timeout(Duration(seconds: Constans.timeOut));
       if (response.statusCode == 200) {

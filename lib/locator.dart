@@ -1,4 +1,3 @@
-
 import 'package:chat_app/core/services/picker_repository.dart';
 import 'package:chat_app/core/services/picker_repository_imp.dart';
 import 'package:chat_app/features/Auth/Data/datasources/remote/auth_remote_data_source.dart';
@@ -33,6 +32,12 @@ import 'package:chat_app/features/profile/data/repositories/profile_repository_i
 import 'package:chat_app/features/profile/domain/repositories/profile_repository.dart';
 import 'package:chat_app/features/profile/domain/usecases/upload_avatar_usecase.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:chat_app/features/upload/data/datasource/remote/upload_file_data_source.dart';
+import 'package:chat_app/features/upload/data/datasource/remote/upload_file_data_source_imp.dart';
+import 'package:chat_app/features/upload/data/repositories/upload_file_repository_imp.dart';
+import 'package:chat_app/features/upload/domain/repositories/upload_file_repository.dart';
+import 'package:chat_app/features/upload/domain/usecase/upload_file_usecase.dart';
+import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
 import 'package:chat_app/features/user/data/datasources/local/user_local_data_source.dart';
 import 'package:chat_app/features/user/data/datasources/local/user_local_data_source_imp.dart';
 import 'package:chat_app/features/user/data/datasources/remote/user_remote_data_source.dart';
@@ -42,6 +47,7 @@ import 'package:chat_app/features/user/domain/repositories/user_repository.dart'
 import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/features/user/domain/usecase/get_users_usecase.dart';
 import 'package:chat_app/features/user/domain/usecase/save_user_usecase.dart';
+import 'package:chat_app/features/user/domain/usecase/update_avatar_usecase.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -53,14 +59,23 @@ void setup() {
   locator.registerSingleton<ChatRemoteDataSource>(ChatRemoteDataSourceImp());
   locator.registerSingleton<UserRemoteDataSource>(UserRemoteDataSourceImp());
   locator.registerSingleton<UserLocalDataSource>(UserLocalDataSourceImp());
-  locator.registerSingleton<ProfileRemoteDataSource>(ProfileRemoteDataSourceImp());
-  /// repositories
-  locator.registerSingleton<AuthRepository>(
-    AuthRepositoryImp(locator()),
+  locator.registerSingleton<ProfileRemoteDataSource>(
+    ProfileRemoteDataSourceImp(),
   );
+  locator.registerSingleton<UploadFileDataSource>(UploadFileDataSourceImp());
+
+  /// repositories
+  locator.registerSingleton<AuthRepository>(AuthRepositoryImp(locator()));
   locator.registerSingleton<ChatRepository>(ChatRepositoryImp(locator()));
-  locator.registerSingleton<UserRepository>(UserRepositoryImp(locator() , locator()));
-  locator.registerSingleton<ProfileRepository>(ProfileRepositoryImp(locator.get()));
+  locator.registerSingleton<UserRepository>(
+    UserRepositoryImp(locator(), locator()),
+  );
+  locator.registerSingleton<ProfileRepository>(
+    ProfileRepositoryImp(locator.get()),
+  );
+  locator.registerSingleton<UploadFileRepository>(
+    UploadFileRepositoryImp(locator.get()),
+  );
 
   ///UseCase
   locator.registerSingleton(AuthUseCase(locator()));
@@ -81,16 +96,15 @@ void setup() {
   locator.registerSingleton(GetUserUsecase(locator.get()));
   locator.registerSingleton(SaveUserUsecase(locator.get()));
   locator.registerSingleton(UploadAvatarUsecase(locator.get()));
-
+  locator.registerSingleton(UpdateAvatarUsecase(locator.get()));
+  locator.registerSingleton(UploadFileUsecase(locator.get()));
 
   ///Services
   locator.registerSingleton<PickerRepository>(PickerRepositoryImp());
 
-
-
   ///Bloc
-  locator.registerSingleton(RegisterBloc(locator() , locator()));
-  locator.registerSingleton(LoginBloc(locator() , locator()));
+  locator.registerSingleton(RegisterBloc(locator(), locator()));
+  locator.registerSingleton(LoginBloc(locator(), locator()));
   locator.registerSingleton(ChatBloc(locator()));
   locator.registerSingleton(
     ChatCubit(
@@ -110,8 +124,8 @@ void setup() {
     ),
   );
   locator.registerSingleton(UserBloc(locator.get()));
-  locator.registerSingleton(ProfileBloc(locator.get(), locator.get()));
-
-
-
+  locator.registerSingleton(
+    ProfileBloc(locator.get(), locator.get(), locator.get()),
+  );
+  locator.registerSingleton(UploadFileBloc(locator.get()));
 }

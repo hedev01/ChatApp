@@ -8,7 +8,10 @@ class MessageModel extends MessageEntity {
     required super.content,
     required super.isRead,
     required super.sentAt,
-    required super.sentAtTime
+    required super.sentAtTime,
+     super.type,
+     super.fileName,
+     super.fileSize,
   });
 
   factory MessageModel.fromHub(List<Object?> args) {
@@ -25,10 +28,6 @@ class MessageModel extends MessageEntity {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "senderId": senderId,
-      "receiverId": receiverId,
-      "content": content,
-    };
+    return {"senderId": senderId, "receiverId": receiverId, "content": content};
   }
 }

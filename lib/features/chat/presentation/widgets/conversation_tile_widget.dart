@@ -3,6 +3,7 @@ import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
+import 'package:chat_app/global_widget/avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,23 +37,7 @@ class ConversationTile extends StatelessWidget {
           children: [
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: const Color(0xffEEF4FF),
-                  backgroundImage: user.avatarUrl.isNotEmpty
-                      ? NetworkImage(Constans.baseUrl + user.avatarUrl)
-                      : null,
-                  child: user.avatarUrl.isEmpty
-                      ? Text(
-                          "${user.firstName.substring(0, 1)}${user.lastName.substring(0, 1)}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Color(0xff4F8CFF),
-                          ),
-                        )
-                      : null,
-                ),
+                Avatar(avatarUrl: user.avatarUrl , firstName: user.firstName ,lastName: user.lastName,),
 
                 BlocBuilder<ChatCubit, ChatState>(
                   builder: (context, state) {
@@ -164,3 +149,5 @@ class ConversationTile extends StatelessWidget {
     );
   }
 }
+
+

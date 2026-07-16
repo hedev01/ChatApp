@@ -6,10 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   final GetUserUsecase getUserUsecase;
   UserBloc(this.getUserUsecase) : super(UserState()) {
-    on<UserEvent>(_getUser);
+    on<GetUser>(_getUser);
+  
   }
 
-  Future<void> _getUser(UserEvent event, Emitter<UserState> emit) async {
+  Future<void> _getUser(GetUser event, Emitter<UserState> emit) async {
     emit(state.copyWith(userStatus: UserStatus.initial));
     try {
       final user = await getUserUsecase();
@@ -29,4 +30,5 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(state.copyWith(error: e.toString(), userStatus: UserStatus.failure));
     }
   }
+
 }

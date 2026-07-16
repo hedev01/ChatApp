@@ -6,6 +6,7 @@ import 'package:chat_app/features/chat/presentation/widgets/chat_shimmer_widget.
 import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_event.dart';
+import 'package:chat_app/global_widget/avatar_widget.dart';
 import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,10 +63,22 @@ class _ChatListPageState extends State<ChatListPage> {
                 ),
                 firstIcon: Icons.search,
                 twoIcon: Icons.add,
-
-                onPressed: () {
-                  context.read<UserBloc>().add(GetUser());
-                },
+                widget: BlocBuilder<ChatBloc, ChatState>(
+                  builder: (context, state) {
+                    if (state.status == ChatStatus.success) {
+                      final user = state.user!.firstWhere(
+                        (element) => element.userId == widget.userId,
+                      );
+                      return Avatar(
+                        avatarUrl: user.avatarUrl,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        onTap: () => context.read<UserBloc>().add(GetUser()),
+                      );
+                    }
+                    return SizedBox();
+                  },
+                ),
               ),
             ),
             Expanded(
@@ -78,16 +91,20 @@ class _ChatListPageState extends State<ChatListPage> {
                     return Center(child: Text(state.error ?? "Error"));
                   }
                   if (state.status == ChatStatus.success) {
+                    final list = state.user!
+                        .where((element) => element.userId != widget.userId)
+                        .toList();
+
                     return ListView.separated(
                       itemBuilder: (context, index) {
-                        final user = state.user![index];
+                        final user = list[index];
                         return ConversationTile(
                           user: user,
                           userId: widget.userId,
                         );
                       },
                       separatorBuilder: (_, __) => const SizedBox(height: 14),
-                      itemCount: state.user!.length,
+                      itemCount: list.length,
                     );
                   }
                   return SizedBox();

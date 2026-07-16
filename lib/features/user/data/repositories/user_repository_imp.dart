@@ -9,7 +9,7 @@ class UserRepositoryImp extends UserRepository {
   final UserRemoteDataSource remote;
   final UserLocalDataSource local;
 
-  UserRepositoryImp(this.remote , this.local);
+  UserRepositoryImp(this.remote, this.local);
   @override
   Future<GetUserEntity> getUsers(String userId) {
     return remote.getUsers(userId);
@@ -23,5 +23,15 @@ class UserRepositoryImp extends UserRepository {
   @override
   Future<void> saveUser(UserDataEntity user) {
     return local.saveUser(UserDataModel.fromEntity(user));
+  }
+
+  @override
+  Future<void> delete() {
+    return local.delete();
+  }
+  
+  @override
+  Future<void> updateAvatar(String avatarUrl) {
+   return local.updateAvatar(avatarUrl);
   }
 }

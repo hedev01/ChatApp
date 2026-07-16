@@ -5,13 +5,18 @@ import 'package:chat_app/features/profile/domain/entities/upload_avatar_entity.d
 import 'package:chat_app/features/profile/domain/usecases/upload_avatar_usecase.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_state.dart';
+import 'package:chat_app/features/user/domain/usecase/update_avatar_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final PickerRepository pickerRepository;
   final UploadAvatarUsecase uploadAvatarUsecase;
-  ProfileBloc(this.pickerRepository, this.uploadAvatarUsecase)
-    : super(const ProfileState()) {
+  final UpdateAvatarUsecase updateAvatarUsecase;
+  ProfileBloc(
+    this.pickerRepository,
+    this.uploadAvatarUsecase,
+    this.updateAvatarUsecase,
+  ) : super(const ProfileState()) {
     on<PickAvatarRequested>(_onPickAvatar);
   }
 
@@ -29,10 +34,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ),
       );
     }
-    final path = await uploadAvatarUsecase(
+    String avatarUrl = await uploadAvatarUsecase(
       UploadAvatarEntity(file: File(image!.path), userId: event.userId),
     );
-    
+    await updateAvatarUsecase(avatarUrl);
+
     emit(state.copyWith(avatar: File(image.path)));
   }
 }

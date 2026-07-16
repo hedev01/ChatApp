@@ -6,14 +6,21 @@ class UserState {
   UserStatus userStatus;
   final UserDataEntity? userDataEntity;
   final String? error;
-  UserState({this.userStatus =UserStatus.initial , this.userDataEntity , this.error });
+  UserState({
+    this.userStatus = UserStatus.initial,
+    this.userDataEntity,
+    this.error,
+  });
 
-
-  UserState copyWith({UserStatus? userStatus , UserDataEntity? userDataEntity , String? error}){
+  UserState copyWith({
+    UserStatus? userStatus,
+    UserDataEntity? userDataEntity,
+    String? error,
+  }) {
     return UserState(
       userStatus: userStatus ?? this.userStatus,
       userDataEntity: userDataEntity ?? this.userDataEntity,
-      error: error ?? this.error
+      error: error ?? this.error,
     );
   }
 }
