@@ -9,7 +9,7 @@ import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
-import 'package:chat_app/locator.dart';
+import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
