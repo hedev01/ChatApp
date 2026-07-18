@@ -5,7 +5,6 @@ import 'package:chat_app/features/chat/data/datasources/remote/chat_remote_data_
 import 'package:chat_app/features/chat/data/models/message_model.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
-
 class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   late HubConnection connection;
   final controller = StreamController<MessageModel>.broadcast();
@@ -25,7 +24,11 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
         .build();
 
     connection.on("ReceiveMessage", (args) {
-      controller.add(MessageModel.fromHub(args!));
+      try {
+        controller.add(MessageModel.fromHub(args!));
+      } catch (e) {
+        print(e.toString());
+      }
     });
 
     connection.on("UserOnline", (args) {
@@ -46,8 +49,6 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
     });
 
     connection.on("ConversationRead", (args) {
-   
-
       readController.add(args ?? []);
     });
 
@@ -71,7 +72,11 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
 
   @override
   Future<void> send(MessageModel message) async {
-    await connection.invoke("SendMessage", args: [message.toJson()]);
+    try {
+      await connection.invoke("SendMessage", args: [message.toJson()]);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -110,7 +115,7 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   }
 
   @override
-  Future<void> stopTyping(String receiverId)async {
-   await connection.invoke("StopTyping", args: [receiverId]);
+  Future<void> stopTyping(String receiverId) async {
+    await connection.invoke("StopTyping", args: [receiverId]);
   }
 }

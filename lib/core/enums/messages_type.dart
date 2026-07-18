@@ -1,5 +1,5 @@
 enum MessagesType {
-  text,
+  text ,
   image,
   file,
 }

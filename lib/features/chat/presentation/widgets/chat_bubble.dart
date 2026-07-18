@@ -1,3 +1,4 @@
+import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/core/enums/messages_type.dart';
 import 'package:chat_app/features/chat/presentation/widgets/file_message.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class ChatBubble extends StatelessWidget {
 
   Widget _buildMessageContent(bool isMe) {
     switch (message.type) {
-      case MessagesType.text:
+      case MessagesType.text: // text
         return Text(
           message.content,
           style: TextStyle(
@@ -81,14 +82,18 @@ class ChatBubble extends StatelessWidget {
           ),
         );
 
-      case MessagesType.file:
-        return FileMessage(message: message, isMe: isMe);
-
-      case MessagesType.image:
+      case MessagesType.image: // image
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(message.content, width: 220, fit: BoxFit.cover),
+          child: Image.network(
+            Constans.baseUrl + message.fileUrl!,
+            width: 220,
+            fit: BoxFit.cover,
+          ),
         );
+
+      case MessagesType.file: // file
+        return FileMessage(message: message, isMe: isMe);
     }
   }
 }

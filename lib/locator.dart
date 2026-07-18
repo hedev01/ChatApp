@@ -1,5 +1,5 @@
-import 'package:chat_app/core/services/picker_repository.dart';
-import 'package:chat_app/core/services/picker_repository_imp.dart';
+import 'package:chat_app/core/services/upload/picker_repository.dart';
+import 'package:chat_app/core/services/upload/picker_repository_imp.dart';
 import 'package:chat_app/features/Auth/Data/datasources/remote/auth_remote_data_source.dart';
 import 'package:chat_app/features/Auth/Data/datasources/remote/auth_remote_data_source_imp.dart';
 import 'package:chat_app/features/Auth/Data/repositories/auth_repository_imp.dart';

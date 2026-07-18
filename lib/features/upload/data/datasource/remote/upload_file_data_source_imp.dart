@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 
 class UploadFileDataSourceImp implements UploadFileDataSource {
   @override
-  Future<String> uploadFile(UploadFileModel model)async {
-      String? avatarUrl;
+  Future<String> uploadFile(UploadFileModel model) async {
+    String? url;
 
     try {
       final request = http.MultipartRequest(
@@ -33,10 +33,10 @@ class UploadFileDataSourceImp implements UploadFileDataSource {
       final body = await response.stream.bytesToString();
       if (response.statusCode == 200) {
         final response = jsonDecode(body);
-        
-        avatarUrl = response["avatarUrl"];
+
+        url = response["url"];
       }
-      return avatarUrl!;
+      return url ?? "";
     } on TimeoutException {
       throw TimeoutException("/api/Upload ==>>> Time Out");
     } catch (e) {

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chat_app/core/services/picker_repository.dart';
+import 'package:chat_app/core/services/upload/picker_repository.dart';
 import 'package:chat_app/features/profile/domain/entities/upload_avatar_entity.dart';
 import 'package:chat_app/features/profile/domain/usecases/upload_avatar_usecase.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_event.dart';

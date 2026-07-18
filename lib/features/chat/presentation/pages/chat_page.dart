@@ -1,15 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:chat_app/core/enums/messages_type.dart';
+import 'package:chat_app/core/services/upload/picker_repository_imp.dart';
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
+import 'package:chat_app/features/upload/domain/entity/upload_file_entity.dart';
+import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
+import 'package:chat_app/features/upload/presentation/bloc/upload_file_event.dart';
+import 'package:chat_app/features/upload/presentation/bloc/upload_file_state.dart';
 import 'package:chat_app/global_widget/avatar_widget.dart';
+import 'package:chat_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helper/helper.dart';
+import '../../../../core/services/upload/picker_repository.dart';
 import '../../../user/domain/entity/get_user_entity.dart';
 import '../widgets/chat_bubble.dart';
 import '../widgets/chat_input.dart';
@@ -127,38 +136,90 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
 
-            ChatInput(
-              controller: controller,
-              onChanged: (value) {
-                if (!_typing) {
-                  _typing = true;
-
-                  context.read<ChatCubit>().startTyping(widget.chatItem.userId);
+            BlocConsumer<UploadFileBloc, UploadFileState>(
+              listener: (context, state) {
+                if (state.status == UploadFileStatus.success) {
+                  final now = DateTime.now();
+                  chatCubit.send(
+                    MessageEntity(
+                      senderId: widget.userId,
+                      receiverId: widget.chatItem.userId,
+                      content: controller.text,
+                      isRead: false,
+                      sentAt: now,
+                      sentAtTime: Helper.convertDateTimeToTime(
+                        now.toIso8601String(),
+                      ),
+                      fileUrl: state.fileUrl,
+                      fileName: state.file!.path.split('/').last,
+                      fileSize: state.file!.lengthSync(),
+                      type: Helper.getMessageType(state.file!.path),
+                    ),
+                  );
                 }
-
-                _typingTimer?.cancel();
-
-                _typingTimer = Timer(const Duration(seconds: 2), () {
-                  _typing = false;
-
-                  context.read<ChatCubit>().stopTyping(widget.chatItem.userId);
-                });
               },
-              onSend: () async {
-                chatCubit.send(
-                  controller.text,
-                  widget.userId,
-                  widget.chatItem.userId,
+              builder: (context, state) {
+                return ChatInput(
+                  controller: controller,
+                  onChanged: (value) {
+                    if (!_typing) {
+                      _typing = true;
+
+                      context.read<ChatCubit>().startTyping(
+                        widget.chatItem.userId,
+                      );
+                    }
+
+                    _typingTimer?.cancel();
+
+                    _typingTimer = Timer(const Duration(seconds: 2), () {
+                      _typing = false;
+
+                      context.read<ChatCubit>().stopTyping(
+                        widget.chatItem.userId,
+                      );
+                    });
+                  },
+                  onSend: () async {
+                    final now = DateTime.now();
+                    chatCubit.send(
+                      MessageEntity(
+                        senderId: widget.userId,
+                        receiverId: widget.chatItem.userId,
+                        content: controller.text,
+                        isRead: false,
+                        sentAt: now,
+                        sentAtTime: Helper.convertDateTimeToTime(
+                          now.toIso8601String(),
+                        ),
+                      ),
+                    );
+                    controller.clear();
+
+                    if (_typing) {
+                      _typing = false;
+
+                      _typingTimer?.cancel();
+
+                      context.read<ChatCubit>().stopTyping(
+                        widget.chatItem.userId,
+                      );
+                    }
+                  },
+                  onAttach: () async {
+                    final repo = locator<PickerRepository>();
+                    final file = await repo.pickFile();
+                    if (!mounted || file == null) return;
+                    context.read<UploadFileBloc>().add(
+                      Uploaded(
+                        entity: UploadFileEntity(
+                          file: File(file.path),
+                          userId: widget.userId,
+                        ),
+                      ),
+                    );
+                  },
                 );
-                controller.clear();
-
-                if (_typing) {
-                  _typing = false;
-
-                  _typingTimer?.cancel();
-
-                  context.read<ChatCubit>().stopTyping(widget.chatItem.userId);
-                }
               },
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:chat_app/core/services/upload/picker_repository.dart';
 import 'package:chat_app/features/upload/domain/usecase/upload_file_usecase.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_event.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_state.dart';
@@ -16,7 +17,7 @@ class UploadFileBloc extends Bloc<UploadFileEvent, UploadFileState> {
       emit(state.copyWith(status: UploadFileStatus.loading));
       String url = await usecase(event.entity);
       if (url.isEmpty) return;
-      emit(state.copyWith(status: UploadFileStatus.success, url: url));
+      emit(state.copyWith(status: UploadFileStatus.success, fileUrl: url , file: event.entity.file));
     } catch (e) {
       emit(
         state.copyWith(status: UploadFileStatus.failure, error: e.toString()),

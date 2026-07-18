@@ -21,17 +21,7 @@ class ChatRepositoryImp extends ChatRepository {
 
   @override
   Future<void> send(MessageEntity message) {
-    final now = DateTime.now();
-    return remote.send(
-      MessageModel(
-        senderId: message.senderId,
-        receiverId: message.receiverId,
-        content: message.content,
-        isRead: false,
-        sentAt: now,
-        sentAtTime: Helper.convertDateTimeToTime(now.toIso8601String()),
-      ),
-    );
+    return remote.send(MessageModel.fromEntity(message));
   }
 
   @override

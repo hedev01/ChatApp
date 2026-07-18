@@ -10,9 +10,7 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-
-      },
+      onTap: () {},
       borderRadius: BorderRadius.circular(12),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -38,8 +36,7 @@ class FileMessage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  //message.fileName ??
-                  "Unknown File",
+                  message.fileName ?? "Unknown File",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -51,8 +48,7 @@ class FileMessage extends StatelessWidget {
                 const SizedBox(height: 4),
 
                 Text(
-                  //message.fileSize ??
-                  "",
+                  message.fileSize.toString(),
                   style: TextStyle(
                     color: isMe ? Colors.grey[700] : Colors.grey[400],
                     fontSize: 12,

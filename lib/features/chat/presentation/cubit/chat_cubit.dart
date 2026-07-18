@@ -145,37 +145,34 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
-  Future<void> send(String text, String senderId, String receiverId) async {
-    final now = DateTime.now();
-    final message = MessageEntity(
-      senderId: senderId,
-      receiverId: receiverId,
-      content: text,
-      isRead: false,
-      sentAt: now,
-      sentAtTime: Helper.convertDateTimeToTime(now.toIso8601String()),
-    );
+ Future<void> send(MessageEntity message) async {
+  await sendMessage(message);
 
-    await sendMessage(message);
+  final conversationId = Helper.getConversationId(
+    message.senderId,
+    message.receiverId,
+  );
 
-    final conversationId = Helper.getConversationId(senderId, receiverId);
+  final updatedMessages = Map<String, List<MessageEntity>>.from(state.messages);
 
-    final updatedMessages = Map<String, List<MessageEntity>>.from(
-      state.messages,
-    );
+  final list = List<MessageEntity>.from(
+    updatedMessages[conversationId] ?? [],
+  );
 
-    final list = List<MessageEntity>.from(
-      updatedMessages[conversationId] ?? [],
-    );
-    list.add(message);
+  list.add(message);
 
-    updatedMessages[conversationId] = list;
+  updatedMessages[conversationId] = list;
 
-    final updatedLast = Map<String, MessageEntity>.from(state.lastMessages);
-    updatedLast[receiverId] = message;
+  final updatedLast = Map<String, MessageEntity>.from(state.lastMessages);
+  updatedLast[message.receiverId] = message;
 
-    emit(state.copyWith(messages: updatedMessages, lastMessages: updatedLast));
-  }
+  emit(
+    state.copyWith(
+      messages: updatedMessages,
+      lastMessages: updatedLast,
+    ),
+  );
+}
 
   Future<void> markAsRead(String senderId, String receiverId) async {
     await markAsReadUsecase(senderId);
