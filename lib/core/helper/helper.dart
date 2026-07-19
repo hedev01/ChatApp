@@ -28,37 +28,48 @@ class Helper {
     }
   }
 
- static MessagesType getMessageType(String filePath) {
-  final extension = p.extension(filePath).toLowerCase();
+  static MessagesType getMessageType(String filePath) {
+    final extension = p.extension(filePath).toLowerCase();
 
-  const imageExtensions = [
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.gif',
-    '.webp',
-    '.bmp',
-    '.heic',
-  ];
+    const imageExtensions = [
+      '.jpg',
+      '.jpeg',
+      '.png',
+      '.gif',
+      '.webp',
+      '.bmp',
+      '.heic',
+    ];
 
-  const audioExtensions = [
-    '.mp3',
-    '.wav',
-    '.aac',
-    '.m4a',
-    '.ogg',
-    '.flac',
-  ];
+    const audioExtensions = ['.mp3', '.wav', '.aac', '.m4a', '.ogg', '.flac'];
 
-  if (imageExtensions.contains(extension)) {
-    return MessagesType.image;
+    if (imageExtensions.contains(extension)) {
+      return MessagesType.image;
+    }
+
+    if (audioExtensions.contains(extension)) {
+      // return MessagesType.audio;
+    }
+
+    return MessagesType.file;
   }
 
-  if (audioExtensions.contains(extension)) {
-   // return MessagesType.audio;
+  static String format(int bytes) {
+    if (bytes <= 0) {
+      return "0 B";
+    }
+
+    const units = ["B", "KB", "MB", "GB", "TB"];
+
+    int index = 0;
+
+    double size = bytes.toDouble();
+
+    while (size >= 1024 && index < units.length - 1) {
+      size /= 1024;
+      index++;
+    }
+
+    return "${size.toStringAsFixed(size >= 100 ? 0 : 1)} ${units[index]}";
   }
-
-  return MessagesType.file;
-}
-
 }

@@ -1,6 +1,7 @@
 import 'package:chat_app/core/core_injection.dart';
 import 'package:chat_app/features/Auth/auth_injection.dart';
 import 'package:chat_app/features/chat/chat_injection.dart';
+import 'package:chat_app/features/download/download_injection.dart';
 import 'package:chat_app/features/profile/profile_injection.dart';
 import 'package:chat_app/features/upload/upload_injection.dart';
 import 'package:chat_app/features/user/user_injection.dart';
@@ -16,4 +17,5 @@ void setup() {
   registerChat(locator);
   registerProfile(locator);
   registerUpload(locator);
+  registerDownload(locator);
 }

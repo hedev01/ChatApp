@@ -1,8 +1,11 @@
 import 'package:chat_app/core/constans/constans.dart';
+import 'package:chat_app/core/di/locator.dart';
 import 'package:chat_app/core/enums/messages_type.dart';
 import 'package:chat_app/features/chat/presentation/widgets/file_message.dart';
+import 'package:chat_app/features/download/presentation/cubit/download_cubit.dart';
+import 'package:chat_app/global_widget/full_screen_image.dart';
 import 'package:flutter/material.dart';
-import 'package:signalr_netcore/ihub_protocol.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/message_entity.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -42,7 +45,7 @@ class ChatBubble extends StatelessWidget {
               ),
             ),
 
-            child: _buildMessageContent(isMe),
+            child: _buildMessageContent(isMe , context),
           ),
 
           Padding(
@@ -71,7 +74,7 @@ class ChatBubble extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageContent(bool isMe) {
+  Widget _buildMessageContent(bool isMe , BuildContext context) {
     switch (message.type) {
       case MessagesType.text: // text
         return Text(
@@ -83,17 +86,31 @@ class ChatBubble extends StatelessWidget {
         );
 
       case MessagesType.image: // image
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            Constans.baseUrl + message.fileUrl!,
-            width: 220,
-            fit: BoxFit.cover,
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FullScreenImage(
+                  imageUrl: Constans.baseUrl + message.fileUrl!,
+                ),
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              Constans.baseUrl + message.fileUrl!,
+              width: 220,
+              fit: BoxFit.cover,
+            ),
           ),
         );
 
       case MessagesType.file: // file
-        return FileMessage(message: message, isMe: isMe);
+        return BlocProvider(
+          create: (context) => locator<DownloadCubit>()..check(message.fileName!),
+          child: FileMessage(message: message, isMe: isMe));
     }
   }
 }
