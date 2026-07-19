@@ -27,7 +27,7 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 <b>User A</b><br><br>
 
-<img src="videos/User A.gif" width="300"/>
+<img src="videos/phone1.gif" width="300"/>
 
 </td>
 
@@ -37,7 +37,7 @@ A modern Chat Application built with **Flutter**, following **Clean Architecture
 
 <b>User B</b><br><br>
 
-<img src="videos/User B.gif" width="300"/>
+<img src="videos/phone2.gif" width="300"/>
 
 </td>
 </tr>
