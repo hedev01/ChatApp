@@ -1,5 +1,8 @@
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
+import 'package:chat_app/features/chat/domain/entities/message_reaction_entity.dart';
+import 'package:chat_app/features/chat/domain/entities/message_reaction_request_entity.dart';
 import 'package:chat_app/features/chat/domain/usecases/connect_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/get_reaction_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/mark_as_read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
@@ -7,6 +10,7 @@ import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart
 import 'package:chat_app/features/chat/domain/usecases/read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/send_reaction_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_chat_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_typing_usecase.dart';
@@ -31,6 +35,8 @@ class ChatCubit extends Cubit<ChatState> {
   final UserStopTypingUsecase userStopTypingUsecase;
   final StartTypingUsecase startTypingUsecase;
   final StopTypingUsecase stopTypingUsecase;
+  final SendReactionUsecase sendReactionUsecase;
+  final GetReactionUsecase getReactionUsecase;
 
   ChatCubit(
     this.connectChat,
@@ -46,6 +52,8 @@ class ChatCubit extends Cubit<ChatState> {
     this.startTypingUsecase,
     this.stopTypingUsecase,
     this.readUsecase,
+    this.sendReactionUsecase,
+    this.getReactionUsecase,
   ) : super(const ChatState());
 
   Future<void> connect(String userId) async {
@@ -63,6 +71,7 @@ class ChatCubit extends Cubit<ChatState> {
       final list = List<MessageEntity>.from(
         updatedMessages[conversationId] ?? [],
       );
+
       list.add(message);
 
       updatedMessages[conversationId] = list;
@@ -143,36 +152,61 @@ class ChatCubit extends Cubit<ChatState> {
 
       emit(state.copyWith(messages: updatedMessages));
     });
+
+    getReactionUsecase().listen((reaction) {
+      final updatedReactions = Map<int, List<MessageReactionEntity>>.from(
+        state.reactions,
+      );
+
+      final reactionsList = List<MessageReactionEntity>.from(
+        updatedReactions[reaction.messageId] ?? [],
+      );
+
+      final existingIndex = reactionsList.indexWhere(
+        (item) => item.userId == reaction.userId,
+      );
+
+      if (existingIndex != -1) {
+        final existingReaction = reactionsList[existingIndex];
+
+        if (existingReaction.reaction == reaction.reaction) {
+          reactionsList.removeAt(existingIndex);
+        } else {
+          reactionsList[existingIndex] = reaction;
+        }
+      } else {
+        reactionsList.add(reaction);
+      }
+
+      updatedReactions[reaction.messageId] = reactionsList;
+
+      emit(state.copyWith(reactions: updatedReactions));
+    });
   }
 
- Future<void> send(MessageEntity message) async {
-  await sendMessage(message);
+  Future<void> send(MessageEntity message) async {
+    await sendMessage(message);
 
-  final conversationId = Helper.getConversationId(
-    message.senderId,
-    message.receiverId,
-  );
+    final conversationId = Helper.getConversationId(
+      message.senderId,
+      message.receiverId,
+    );
 
-  final updatedMessages = Map<String, List<MessageEntity>>.from(state.messages);
+    final updatedMessages = Map<String, List<MessageEntity>>.from(
+      state.messages,
+    );
 
-  final list = List<MessageEntity>.from(
-    updatedMessages[conversationId] ?? [],
-  );
+    final list = List<MessageEntity>.from(
+      updatedMessages[conversationId] ?? [],
+    );
 
-  list.add(message);
+    updatedMessages[conversationId] = list;
 
-  updatedMessages[conversationId] = list;
+    final updatedLast = Map<String, MessageEntity>.from(state.lastMessages);
+    updatedLast[message.receiverId] = message;
 
-  final updatedLast = Map<String, MessageEntity>.from(state.lastMessages);
-  updatedLast[message.receiverId] = message;
-
-  emit(
-    state.copyWith(
-      messages: updatedMessages,
-      lastMessages: updatedLast,
-    ),
-  );
-}
+    emit(state.copyWith(messages: updatedMessages, lastMessages: updatedLast));
+  }
 
   Future<void> markAsRead(String senderId, String receiverId) async {
     await markAsReadUsecase(senderId);
@@ -207,5 +241,22 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> stop() async {
     await stopChatUsecase();
+  }
+
+  Future<void> sendReaction(MessageReactionRequestEntity request) async {
+    await sendReactionUsecase(request);
+
+    final updatedReactions = Map<int, List<MessageReactionEntity>>.from(
+      state.reactions,
+    );
+
+    final reactionsList = List<MessageReactionEntity>.from(
+      updatedReactions[request.messageId] ?? [],
+    );
+
+
+    updatedReactions[request.messageId] = reactionsList;
+
+    emit(state.copyWith(reactions: updatedReactions));
   }
 }

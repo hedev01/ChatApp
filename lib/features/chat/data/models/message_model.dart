@@ -7,6 +7,7 @@ import 'package:signalr_netcore/ihub_protocol.dart';
 
 class MessageModel extends MessageEntity {
   MessageModel({
+    super.messageId,
     required super.senderId,
     required super.receiverId,
     required super.content,
@@ -25,6 +26,7 @@ class MessageModel extends MessageEntity {
     final date = DateTime.parse(json["sentAt"]).toLocal();
 
     return MessageModel(
+      messageId: json["id"],
       senderId: json["senderId"],
       receiverId: json["receiverId"],
       content: json["content"],

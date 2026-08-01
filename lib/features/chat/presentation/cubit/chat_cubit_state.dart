@@ -1,3 +1,5 @@
+import 'package:chat_app/features/chat/domain/entities/message_reaction_entity.dart';
+
 import '../../domain/entities/message_entity.dart';
 
 class ChatState {
@@ -7,6 +9,7 @@ class ChatState {
   final Map<String, MessageEntity> lastMessages;
   final Map<String, bool> isTyping;
   final Map<String , bool> seen;
+  final Map<int, List<MessageReactionEntity>> reactions;
 
   const ChatState({
     this.messages = const {},
@@ -14,7 +17,8 @@ class ChatState {
     this.unreadCount = const {},
     this.lastMessages = const {},
     this.isTyping = const {},
-    this.seen = const {}
+    this.seen = const {},
+    this.reactions = const {}
   });
 
   ChatState copyWith({
@@ -23,7 +27,8 @@ class ChatState {
     Map<String, int>? unreadCount,
     Map<String, MessageEntity>? lastMessages,
     Map<String, bool>? isTyping,
-    Map<String , bool>? seen
+    Map<String , bool>? seen,
+    final Map<int, List<MessageReactionEntity>>? reactions
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -31,7 +36,8 @@ class ChatState {
       unreadCount: unreadCount ?? this.unreadCount,
       lastMessages: lastMessages ?? this.lastMessages,
       isTyping: isTyping ?? this.isTyping,
-      seen: seen ?? this.seen
+      seen: seen ?? this.seen,
+      reactions: reactions ?? this.reactions
     );
   }
 }

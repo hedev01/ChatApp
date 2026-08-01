@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/features/chat/data/datasources/remote/chat_remote_data_source.dart';
 import 'package:chat_app/features/chat/data/models/message_model.dart';
+import 'package:chat_app/features/chat/data/models/message_reaction_model.dart';
+import 'package:chat_app/features/chat/data/models/message_reaction_request_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
@@ -14,6 +17,8 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   final readController = StreamController<List<Object?>>.broadcast();
   final userTypingController = StreamController<String>.broadcast();
   final userStopTypingController = StreamController<String>.broadcast();
+  final getReactionController =
+      StreamController<MessageReactionModel>.broadcast();
 
   final Set<String> _onlineUsers = {};
 
@@ -30,6 +35,14 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
         print(e.toString());
       }
     });
+
+    connection.on("MessageSent", (args) {
+      try {
+        controller.add(MessageModel.fromHub(args!));
+      } catch (e) {
+        print(e.toString());
+      }
+    },);
 
     connection.on("UserOnline", (args) {
       final userId = args![0].toString();
@@ -62,6 +75,10 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
       final senderId = args![0].toString();
 
       userStopTypingController.add(senderId);
+    });
+
+    connection.on("ReactionAdded", (args) {
+      getReactionController.add(MessageReactionModel.fromhub(args));
     });
 
     await connection.start();
@@ -110,6 +127,9 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   Stream<String> get userTyping => userTypingController.stream;
 
   @override
+  Stream<MessageReactionModel> get reactions => getReactionController.stream;
+
+  @override
   Future<void> startTyping(String receiverId) async {
     await connection.invoke("StartTyping", args: [receiverId]);
   }
@@ -117,5 +137,10 @@ class ChatRemoteDataSourceImp extends ChatRemoteDataSource {
   @override
   Future<void> stopTyping(String receiverId) async {
     await connection.invoke("StopTyping", args: [receiverId]);
+  }
+
+  @override
+  Future<void> sendReaction(MessageReactionRequestModel model) async {
+    await connection.invoke("ReactMessage", args: [model.toJson()]);
   }
 }

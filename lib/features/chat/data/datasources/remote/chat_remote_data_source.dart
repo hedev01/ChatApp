@@ -1,4 +1,7 @@
 
+import 'package:chat_app/features/chat/data/models/message_reaction_model.dart';
+import 'package:chat_app/features/chat/data/models/message_reaction_request_model.dart';
+
 import '../../models/message_model.dart';
 
 abstract class ChatRemoteDataSource {
@@ -8,6 +11,7 @@ abstract class ChatRemoteDataSource {
   Future<void> markAsRead(String senderId);
   Future<void> startTyping(String receiverId);
   Future<void> stopTyping(String receiverId);
+  Future<void> sendReaction(MessageReactionRequestModel model);
   Stream<MessageModel> get messages;
   Stream<Set<String>> get online;
   Stream<Set<String>> get offline;
@@ -15,4 +19,5 @@ abstract class ChatRemoteDataSource {
   Stream<List<Object?>> get conversationRead;
   Stream<String> get userTyping;
   Stream<String> get userStopTyping;
+  Stream<MessageReactionModel> get reactions;
 }

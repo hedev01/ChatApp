@@ -1,6 +1,9 @@
 import 'package:chat_app/core/helper/helper.dart';
 import 'package:chat_app/features/chat/data/datasources/remote/chat_remote_data_source.dart';
+import 'package:chat_app/features/chat/data/models/message_reaction_request_model.dart';
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
+import 'package:chat_app/features/chat/domain/entities/message_reaction_entity.dart';
+import 'package:chat_app/features/chat/domain/entities/message_reaction_request_entity.dart';
 import 'package:chat_app/features/chat/domain/repositories/chat_repository.dart';
 
 import '../models/message_model.dart';
@@ -72,5 +75,15 @@ class ChatRepositoryImp extends ChatRepository {
   @override
   Future<void> stopTyping(String receiverId) {
     return remote.stopTyping(receiverId);
+  }
+
+  @override
+  Stream<MessageReactionEntity> getReaction() {
+    return remote.reactions;
+  }
+
+  @override
+  Future<void> sendReaction(MessageReactionRequestEntity entity) {
+    return remote.sendReaction(MessageReactionRequestModel.fromEntity(entity));
   }
 }

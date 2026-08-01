@@ -3,6 +3,7 @@ import 'package:chat_app/features/chat/data/datasources/remote/chat_remote_data_
 import 'package:chat_app/features/chat/data/repositories/chat_repository_imp.dart';
 import 'package:chat_app/features/chat/domain/repositories/chat_repository.dart';
 import 'package:chat_app/features/chat/domain/usecases/connect_chat_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/get_reaction_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/mark_as_read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/offline_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/online_usecase.dart';
@@ -10,6 +11,7 @@ import 'package:chat_app/features/chat/domain/usecases/online_users_usecase.dart
 import 'package:chat_app/features/chat/domain/usecases/read_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/receive_messages_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:chat_app/features/chat/domain/usecases/send_reaction_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/start_typing_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_chat_usecase.dart';
 import 'package:chat_app/features/chat/domain/usecases/stop_typing_usecase.dart';
@@ -19,14 +21,14 @@ import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
-void registerChat(GetIt locator){
-   /// data source
+void registerChat(GetIt locator) {
+  /// data source
   locator.registerSingleton<ChatRemoteDataSource>(ChatRemoteDataSourceImp());
 
   /// repositories
   locator.registerSingleton<ChatRepository>(ChatRepositoryImp(locator()));
 
-   ///UseCase
+  ///UseCase
   locator.registerSingleton(SendMessageUsecase(locator()));
   locator.registerSingleton(ReceiveMessagesUseCase(locator()));
   locator.registerSingleton(ConnectChatUseCase(locator.get()));
@@ -40,8 +42,10 @@ void registerChat(GetIt locator){
   locator.registerSingleton(UserStopTypingUsecase(locator.get()));
   locator.registerSingleton(StartTypingUsecase(locator.get()));
   locator.registerSingleton(StopTypingUsecase(locator.get()));
+  locator.registerSingleton(SendReactionUsecase(locator.get()));
+  locator.registerSingleton(GetReactionUsecase(locator.get()));
 
-    ///Bloc
+  ///Bloc
   locator.registerSingleton(ChatBloc(locator()));
   locator.registerSingleton(
     ChatCubit(
@@ -58,6 +62,8 @@ void registerChat(GetIt locator){
       locator.get(),
       locator.get(),
       locator.get(),
+      locator.get(),
+      locator.get()
     ),
   );
 }

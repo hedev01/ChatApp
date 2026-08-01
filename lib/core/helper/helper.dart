@@ -1,4 +1,5 @@
 import 'package:chat_app/core/enums/messages_type.dart';
+import 'package:chat_app/core/enums/reaction_type.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
@@ -71,5 +72,27 @@ class Helper {
     }
 
     return "${size.toStringAsFixed(size >= 100 ? 0 : 1)} ${units[index]}";
+  }
+
+  static String reactionEmoji(ReactionType reaction) {
+    switch (reaction) {
+      case ReactionType.like:
+        return "👍";
+
+      case ReactionType.love:
+        return "❤️";
+
+      case ReactionType.laugh:
+        return "😂";
+
+      case ReactionType.wow:
+        return "😮";
+
+      case ReactionType.wad:
+        return "😢";
+
+      case ReactionType.angry:
+        return "🔥";
+    }
   }
 }

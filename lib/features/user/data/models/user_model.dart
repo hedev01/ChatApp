@@ -14,6 +14,7 @@ class UserModel extends UserEntity {
 
 class UserDataModel extends UserDataEntity {
   UserDataModel({
+    required super.id,
     required super.userId,
     required super.firstName,
     required super.lastName,
@@ -24,6 +25,7 @@ class UserDataModel extends UserDataEntity {
 
   factory UserDataModel.fromEntity(UserDataEntity entity) {
     return UserDataModel(
+      id: entity.id,
       userId: entity.userId,
       firstName: entity.firstName,
       lastName: entity.lastName,
@@ -35,6 +37,7 @@ class UserDataModel extends UserDataEntity {
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return UserDataModel(
+      id: json["id"],
       userId: json["userId"],
       firstName: json["firstName"],
       lastName: json["lastName"],
@@ -46,6 +49,7 @@ class UserDataModel extends UserDataEntity {
 
   factory UserDataModel.fromHive(Map<dynamic, dynamic> json) {
     return UserDataModel(
+      id: json["id"],
       userId: json["userId"],
       firstName: json["firstName"],
       lastName: json["lastName"],
@@ -57,6 +61,7 @@ class UserDataModel extends UserDataEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      "id" : id,
       "userId": userId,
       "firstName": firstName,
       "lastName": lastName,

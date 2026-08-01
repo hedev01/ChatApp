@@ -128,6 +128,9 @@ class _ChatPageState extends State<ChatPage> {
                     itemBuilder: (_, index) {
                       return ChatBubble(
                         message: messages[index],
+                        user: widget.chatItem,
+                        reactions:
+                            state.reactions[messages[index].messageId] ?? [],
                         myUserId: widget.userId,
                       );
                     },

@@ -19,6 +19,7 @@ class GetUserModel extends GetUserEntity {
 
 class GetUserDataModel extends GetUserDataEntity {
   GetUserDataModel({
+    required super.id,
     required super.userId,
     required super.firstName,
     required super.lastName,
@@ -28,6 +29,7 @@ class GetUserDataModel extends GetUserDataEntity {
 
   factory GetUserDataModel.fromEntity(UserDataEntity entity) {
     return GetUserDataModel(
+      id: entity.id,
       userId: entity.userId,
       firstName: entity.firstName,
       lastName: entity.lastName,
@@ -38,6 +40,7 @@ class GetUserDataModel extends GetUserDataEntity {
 
   factory GetUserDataModel.fromJson(Map<String, dynamic> json) {
     return GetUserDataModel(
+      id: json["id"],
       userId: json["userId"],
       firstName: json["firstName"],
       lastName: json["lastName"],
@@ -48,6 +51,7 @@ class GetUserDataModel extends GetUserDataEntity {
 
    factory GetUserDataModel.fromHive(Map<dynamic, dynamic> json) {
     return GetUserDataModel(
+      id: json["id"],
       userId: json["userId"],
       firstName: json["firstName"],
       lastName: json["lastName"],

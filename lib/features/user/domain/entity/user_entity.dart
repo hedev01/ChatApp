@@ -6,6 +6,7 @@ class UserEntity {
 }
 
 class UserDataEntity {
+  final int id;
   final String userId;
   final String firstName;
   final String lastName;
@@ -13,6 +14,7 @@ class UserDataEntity {
   final String accessToken;
   final String avatarUrl;
   UserDataEntity({
+    required this.id,
     required this.userId,
     required this.firstName,
     required this.lastName,
