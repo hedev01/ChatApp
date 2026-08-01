@@ -8,8 +8,9 @@ class ChatState {
   final Map<String, int> unreadCount;
   final Map<String, MessageEntity> lastMessages;
   final Map<String, bool> isTyping;
-  final Map<String , bool> seen;
+  final Map<String, bool> seen;
   final Map<int, List<MessageReactionEntity>> reactions;
+  final MessageEntity? replyMessage;
 
   const ChatState({
     this.messages = const {},
@@ -18,8 +19,11 @@ class ChatState {
     this.lastMessages = const {},
     this.isTyping = const {},
     this.seen = const {},
-    this.reactions = const {}
+    this.reactions = const {},
+    this.replyMessage,
   });
+
+  static const _noChange = Object();
 
   ChatState copyWith({
     Map<String, List<MessageEntity>>? messages,
@@ -27,8 +31,9 @@ class ChatState {
     Map<String, int>? unreadCount,
     Map<String, MessageEntity>? lastMessages,
     Map<String, bool>? isTyping,
-    Map<String , bool>? seen,
-    final Map<int, List<MessageReactionEntity>>? reactions
+    Map<String, bool>? seen,
+    Map<int, List<MessageReactionEntity>>? reactions,
+    Object? replyMessage = _noChange,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -37,7 +42,10 @@ class ChatState {
       lastMessages: lastMessages ?? this.lastMessages,
       isTyping: isTyping ?? this.isTyping,
       seen: seen ?? this.seen,
-      reactions: reactions ?? this.reactions
+      reactions: reactions ?? this.reactions,
+      replyMessage: replyMessage == _noChange
+          ? this.replyMessage
+          : replyMessage as MessageEntity?,
     );
   }
 }

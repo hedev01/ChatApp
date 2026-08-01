@@ -259,4 +259,11 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(state.copyWith(reactions: updatedReactions));
   }
+  void setReplyMessage(MessageEntity? message) {
+  emit(
+    state.copyWith(
+      replyMessage: message,
+    ),
+  );
+}
 }

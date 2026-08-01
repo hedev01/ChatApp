@@ -18,6 +18,7 @@ class MessageModel extends MessageEntity {
     super.fileUrl,
     super.fileName,
     super.fileSize,
+    super.replyToMessageId
   });
 
   factory MessageModel.fromHub(List<Object?> args) {
@@ -39,6 +40,7 @@ class MessageModel extends MessageEntity {
       sentAt: date,
       sentAtTime: Helper.convertDateTimeToTime(date.toIso8601String()),
       isRead: false,
+      replyToMessageId: json["replyToMessageId"]
     );
   }
 
@@ -54,6 +56,7 @@ class MessageModel extends MessageEntity {
       fileName: entity.fileName,
       fileSize: entity.fileSize,
       fileUrl: entity.fileUrl,
+      replyToMessageId: entity.replyToMessageId
     );
   }
 
@@ -66,6 +69,7 @@ class MessageModel extends MessageEntity {
       "fileUrl": fileUrl ?? '',
       "fileName": fileName ?? '',
       "fileSize": fileSize ?? 0,
+      "replyToMessageId" : replyToMessageId
     };
   }
 }

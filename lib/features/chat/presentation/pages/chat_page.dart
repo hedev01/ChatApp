@@ -7,6 +7,7 @@ import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
+import 'package:chat_app/features/chat/presentation/widgets/reply_preview_widget.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
 import 'package:chat_app/features/upload/domain/entity/upload_file_entity.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
@@ -109,6 +110,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               child: Divider(thickness: 0.6),
             ),
+
             Expanded(
               child: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
@@ -132,17 +134,40 @@ class _ChatPageState extends State<ChatPage> {
                         reactions:
                             state.reactions[messages[index].messageId] ?? [],
                         myUserId: widget.userId,
+                        onReply: () {
+                          context.read<ChatCubit>().setReplyMessage(
+                            messages[index],
+                          );
+                        },
+                        allMessages: messages,
                       );
                     },
                   );
                 },
               ),
             ),
+            BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                if (state.replyMessage != null) {
+                  return ReplyPreview(
+                    replyMessage: state.replyMessage!,
+                    senderName: state.replyMessage!.senderId == widget.userId
+                        ? 'You'
+                        : widget.chatItem.firstName,
+                    onCancel: () {
+                      context.read<ChatCubit>().setReplyMessage(null);
+                    },
+                  );
+                }
+                return SizedBox();
+              },
+            ),
 
             BlocConsumer<UploadFileBloc, UploadFileState>(
-              listener: (context, state) {
-                if (state.status == UploadFileStatus.success) {
+              listener: (context, uploadFileState) {
+                if (uploadFileState.status == UploadFileStatus.success) {
                   final now = DateTime.now();
+                  final chatState = context.read<ChatCubit>().state;
                   chatCubit.send(
                     MessageEntity(
                       senderId: widget.userId,
@@ -153,12 +178,14 @@ class _ChatPageState extends State<ChatPage> {
                       sentAtTime: Helper.convertDateTimeToTime(
                         now.toIso8601String(),
                       ),
-                      fileUrl: state.fileUrl,
-                      fileName: state.file!.path.split('/').last,
-                      fileSize: state.file!.lengthSync(),
-                      type: Helper.getMessageType(state.file!.path),
+                      fileUrl: uploadFileState.fileUrl,
+                      fileName: uploadFileState.file!.path.split('/').last,
+                      fileSize: uploadFileState.file!.lengthSync(),
+                      type: Helper.getMessageType(uploadFileState.file!.path),
+                      replyToMessageId: chatState.replyMessage?.messageId,
                     ),
                   );
+                  context.read<ChatCubit>().setReplyMessage(null);
                 }
               },
               builder: (context, state) {
@@ -185,6 +212,7 @@ class _ChatPageState extends State<ChatPage> {
                   },
                   onSend: () async {
                     final now = DateTime.now();
+                    final chatState = context.read<ChatCubit>().state;
                     chatCubit.send(
                       MessageEntity(
                         senderId: widget.userId,
@@ -195,8 +223,11 @@ class _ChatPageState extends State<ChatPage> {
                         sentAtTime: Helper.convertDateTimeToTime(
                           now.toIso8601String(),
                         ),
+                        replyToMessageId: chatState.replyMessage?.messageId,
                       ),
                     );
+                    context.read<ChatCubit>().setReplyMessage(null);
+
                     controller.clear();
 
                     if (_typing) {
