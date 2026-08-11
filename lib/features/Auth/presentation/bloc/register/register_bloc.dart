@@ -1,13 +1,14 @@
 import 'package:chat_app/features/Auth/domain/entities/register_request_entity.dart';
+import 'package:chat_app/features/Auth/domain/usecases/auth_save_user_usecase.dart';
 import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_event.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_state.dart';
-import 'package:chat_app/features/user/domain/usecase/save_user_usecase.dart';
+import 'package:chat_app/features/user/domain/entity/user_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AuthUseCase authUseCase;
-  final SaveUserUsecase saveUserUsecase;
+  final AuthSaveUserUsecase saveUserUsecase;
   RegisterBloc(this.authUseCase , this.saveUserUsecase) : super(RegisterState()) {
     on<RegisterSubmitted>(_onRegister);
   }

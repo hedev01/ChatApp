@@ -1,7 +1,7 @@
+import 'package:chat_app/features/Auth/domain/usecases/get_auth_user_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
-import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> checkUser() async {
      chatCubit = context.read<ChatCubit>();
      groupCubit = context.read<GroupCubit>();
-    GetUserUsecase authUseCase = GetUserUsecase(locator.get());
+    GetAuthUserUsecase authUseCase = GetAuthUserUsecase(locator.get());
     try {
       final user = await authUseCase();
 

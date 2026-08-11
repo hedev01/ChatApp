@@ -1,23 +1,22 @@
-import 'package:chat_app/features/user/data/datasources/local/user_local_data_source.dart';
+import 'package:chat_app/features/Auth/Data/datasources/local/auth_local_data_source.dart';
+import 'package:chat_app/features/Auth/Data/models/auth_model.dart';
 import 'package:hive/hive.dart';
 
-import '../../models/user_model.dart';
-
-class UserLocalDataSourceImp extends UserLocalDataSource {
-  static const String boxName = "auth";
+class AuthLocalDataSourceImp implements AuthLocalDataSource {
+ static const String boxName = "auth";
 
   @override
-  Future<void> saveUser(UserDataModel user) async {
+  Future<void> saveUser(AuthDataModel user) async {
     final box = await Hive.openBox(boxName);
 
     await box.put('user', user.toJson());
   }
 
   @override
-  Future<UserDataModel> getUser() async {
+  Future<AuthDataModel> getUser() async {
     final box = await Hive.openBox(boxName);
     var user = box.get('user');
-    return UserDataModel.fromHive(user);
+    return AuthDataModel.fromHive(user);
   }
 
   @override

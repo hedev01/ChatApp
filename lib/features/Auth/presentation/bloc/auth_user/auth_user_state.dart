@@ -1,23 +1,23 @@
-import 'package:chat_app/features/user/domain/entity/user_entity.dart';
+import 'package:chat_app/features/Auth/domain/entities/auth_entity.dart';
 
 enum UserStatus { initial, loading, success, failure }
 
-class UserState {
+class AuthUserState {
   UserStatus userStatus;
-  final UserDataEntity? userDataEntity;
+  final AuthDataEntity? userDataEntity;
   final String? error;
-  UserState({
+  AuthUserState({
     this.userStatus = UserStatus.initial,
     this.userDataEntity,
     this.error,
   });
 
-  UserState copyWith({
+  AuthUserState copyWith({
     UserStatus? userStatus,
-    UserDataEntity? userDataEntity,
+    AuthDataEntity? userDataEntity,
     String? error,
   }) {
-    return UserState(
+    return AuthUserState(
       userStatus: userStatus ?? this.userStatus,
       userDataEntity: userDataEntity ?? this.userDataEntity,
       error: error ?? this.error,

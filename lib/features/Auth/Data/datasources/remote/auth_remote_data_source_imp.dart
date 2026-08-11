@@ -2,15 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:chat_app/features/Auth/Data/datasources/remote/auth_remote_data_source.dart';
+import 'package:chat_app/features/Auth/Data/models/auth_model.dart';
 
 import '../../../../../core/constans/constans.dart';
-import '../../../../user/data/models/user_model.dart';
 import '../../models/user_request.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   @override
-  Future<UserModel?> register(UserRequestModel request) async {
+  Future<AuthModel?> register(UserRequestModel request) async {
     try {
       final response = await http
           .post(
@@ -23,7 +23,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
-        return UserModel.fromJson(json);
+        return AuthModel.fromJson(json);
       }
     } on TimeoutException {
       throw TimeoutException(
@@ -37,8 +37,8 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> login(String email, String password) async {
-    UserModel? result;
+  Future<AuthModel> login(String email, String password) async {
+    AuthModel? result;
 
     try {
       final response = await http
@@ -53,7 +53,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
           .timeout(Duration(seconds: Constans.timeOut));
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        result = UserModel.fromJson(json);
+        result = AuthModel.fromJson(json);
       }
     } on TimeoutException {
       throw TimeoutException(

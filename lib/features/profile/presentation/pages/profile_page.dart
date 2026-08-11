@@ -1,10 +1,11 @@
+import 'package:chat_app/features/Auth/domain/entities/auth_entity.dart';
+import 'package:chat_app/features/Auth/domain/usecases/auth_delete_user_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/pages/splash_screen.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_event.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_event.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_state.dart';
 import 'package:chat_app/features/user/domain/entity/user_entity.dart';
-import 'package:chat_app/features/user/domain/usecase/delete_user_usecase.dart';
 import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ import '../../../chat/presentation/bloc/chat_bloc.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key, required this.user});
 
-  final UserDataEntity user;
+  final AuthDataEntity user;
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                   title: "Logout",
                   color: Colors.red,
                   onTap: () async {
-                    DeleteUserUsecase deleteUserUsecase = DeleteUserUsecase(
+                    AuthDeleteUserUsecase deleteUserUsecase = AuthDeleteUserUsecase(
                       locator.get(),
                     );
                     await deleteUserUsecase();

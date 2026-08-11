@@ -1,5 +1,6 @@
 import 'package:chat_app/core/services/lifecycle_service.dart';
 import 'package:chat_app/core/theme/app_theme.dart';
+import 'package:chat_app/features/Auth/presentation/bloc/auth_user/auth_user_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/cubit/password_visibility_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
-import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
 import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +28,7 @@ void main() async {
         BlocProvider(create: (_) => PasswordVisibilityCubit()),
         BlocProvider(create: (_) => RegisterBloc(locator.get(), locator.get())),
         BlocProvider(create: (_) => LoginBloc(locator.get(), locator.get())),
+        BlocProvider(create: (context) => AuthUserBloc(locator.get()),),
         BlocProvider(create: (_) => ChatBloc(locator.get())),
         BlocProvider(
           create: (_) => ChatCubit(
@@ -49,7 +50,6 @@ void main() async {
           ),
         ),
         BlocProvider(create: (context) => GroupCubit(locator.get(), locator.get()),),
-        BlocProvider(create: (_) => UserBloc(locator.get())),
         BlocProvider(
           create: (_) =>
               ProfileBloc(locator.get(), locator.get(), locator.get()),

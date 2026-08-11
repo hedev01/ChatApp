@@ -1,4 +1,5 @@
 import 'package:chat_app/features/Auth/domain/usecases/auth_usecase.dart';
+import 'package:chat_app/features/Auth/domain/usecases/get_auth_user_usecase.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_event.dart';
 import 'package:chat_app/features/Auth/presentation/bloc/login/login_state.dart';
@@ -7,12 +8,10 @@ import 'package:chat_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:chat_app/features/Auth/presentation/widgets/auth_title.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
-import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/global_widget/error_message_widget.dart';
 import 'package:chat_app/global_widget/success_message_widget.dart';
 import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -70,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) async {
                       if (state.status == LoginStatus.success) {
-                        GetUserUsecase authUseCase = GetUserUsecase(locator.get());
+                        GetAuthUserUsecase authUseCase = GetAuthUserUsecase(locator.get());
                         final user = await authUseCase();
                         await chatCubit.connect(user.userId);
                         Navigator.of(context).pushAndRemoveUntil(

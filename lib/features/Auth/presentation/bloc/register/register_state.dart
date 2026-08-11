@@ -1,10 +1,11 @@
-import '../../../../user/domain/entity/user_entity.dart';
+import 'package:chat_app/features/Auth/domain/entities/auth_entity.dart';
+
 
 enum RegisterStatus { initial, loading, success, failure }
 
 class RegisterState {
   final RegisterStatus status;
-  final UserEntity? user;
+  final AuthEntity? user;
   final String? error;
 
   const RegisterState({
@@ -15,7 +16,7 @@ class RegisterState {
 
   RegisterState copyWith({
     RegisterStatus? status,
-    UserEntity? user,
+    AuthEntity? user,
     String? error,
   }) {
     return RegisterState(
