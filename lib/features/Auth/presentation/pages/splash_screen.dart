@@ -1,5 +1,6 @@
 import 'package:chat_app/features/Auth/presentation/pages/register_page.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
+import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/core/di/locator.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late ChatCubit chatCubit;
+  late GroupCubit groupCubit;
   @override
   void initState() {
     super.initState();
@@ -24,12 +26,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkUser() async {
      chatCubit = context.read<ChatCubit>();
+     groupCubit = context.read<GroupCubit>();
     GetUserUsecase authUseCase = GetUserUsecase(locator.get());
     try {
       final user = await authUseCase();
 
       if (user.userId.isNotEmpty) {
         await chatCubit.connect(user.userId);
+        await groupCubit.connectGroup(user.userId);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) {

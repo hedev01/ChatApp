@@ -6,6 +6,7 @@ import 'package:chat_app/features/Auth/presentation/cubit/password_visibility_cu
 import 'package:chat_app/features/Auth/presentation/pages/splash_screen.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
+import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
@@ -47,6 +48,7 @@ void main() async {
             locator.get()
           ),
         ),
+        BlocProvider(create: (context) => GroupCubit(locator.get(), locator.get()),),
         BlocProvider(create: (_) => UserBloc(locator.get())),
         BlocProvider(
           create: (_) =>

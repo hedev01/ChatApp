@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ChatAppBar extends StatelessWidget {
   final String title;
   final Widget desWidget;
-  final IconData firstIcon, twoIcon;
+  final IconButton firstIcon, twoIcon;
   final void Function()? onPressed;
   final Widget? widget;
 
@@ -62,9 +62,9 @@ class ChatAppBar extends StatelessWidget {
             ),
           ),
 
-          CircleButton(icon: firstIcon),
+          CircleButton(icon: firstIcon.icon, onPressed: firstIcon.onPressed),
           const SizedBox(width: 12),
-          CircleButton(icon: twoIcon),
+          CircleButton(icon: twoIcon.icon, onPressed: twoIcon.onPressed),
         ],
       ),
     );

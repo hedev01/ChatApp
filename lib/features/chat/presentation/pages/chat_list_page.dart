@@ -3,6 +3,7 @@ import 'package:chat_app/features/chat/presentation/bloc/chat_event.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_state.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_app_bar_widget.dart';
 import 'package:chat_app/features/chat/presentation/widgets/chat_shimmer_widget.dart';
+import 'package:chat_app/features/group/presentation/pages/create_group_page.dart';
 import 'package:chat_app/features/user/domain/usecase/get_user_usecase.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_bloc.dart';
 import 'package:chat_app/features/user/presentation/bloc/user_event.dart';
@@ -61,8 +62,18 @@ class _ChatListPageState extends State<ChatListPage> {
                   "Your Conversations",
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
-                firstIcon: Icons.search,
-                twoIcon: Icons.add,
+                firstIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {},
+                ),
+                twoIcon: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      return CreateGroupPage(currentUserId: widget.userId);
+                    },));
+                  },
+                ),
                 widget: BlocBuilder<ChatBloc, ChatState>(
                   builder: (context, state) {
                     if (state.status == ChatStatus.success) {

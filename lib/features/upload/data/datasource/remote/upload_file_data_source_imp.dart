@@ -19,6 +19,8 @@ class UploadFileDataSourceImp implements UploadFileDataSource {
 
       request.fields["userId"] = model.userId;
 
+      request.fields["folderName"] = model.folderName;
+
       request.files.add(
         await http.MultipartFile.fromPath(
           'file',

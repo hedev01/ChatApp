@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:chat_app/core/enums/messages_type.dart';
-import 'package:chat_app/core/services/upload/picker_repository_imp.dart';
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
@@ -93,8 +91,14 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                           ],
                         ),
-                  firstIcon: Icons.call,
-                  twoIcon: Icons.video_call,
+                  firstIcon: IconButton(
+                    icon: Icon(Icons.call),
+                    onPressed: () {},
+                  ),
+                  twoIcon: IconButton(
+                    icon: Icon(Icons.video_call),
+                    onPressed: () {},
+                  ),
                   widget: Avatar(
                     avatarUrl: widget.chatItem.avatarUrl,
                     firstName: widget.chatItem.firstName,
@@ -249,6 +253,7 @@ class _ChatPageState extends State<ChatPage> {
                         entity: UploadFileEntity(
                           file: File(file.path),
                           userId: widget.userId,
+                          folderName: "Media"
                         ),
                       ),
                     );
