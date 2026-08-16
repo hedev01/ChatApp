@@ -233,7 +233,7 @@ class _ChatBubbleState extends State<ChatBubble>
         Text(
           reply.senderId == widget.myUserId
               ? "You"
-              : widget.user.firstName,
+              : widget.user.title,
           style: const TextStyle(
             color: Colors.blueAccent,
             fontSize: 12,

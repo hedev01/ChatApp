@@ -1,4 +1,3 @@
-import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
@@ -37,26 +36,26 @@ class ConversationTile extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Avatar(avatarUrl: user.avatarUrl , firstName: user.firstName ,lastName: user.lastName,),
-
-                BlocBuilder<ChatCubit, ChatState>(
-                  builder: (context, state) {
-                    final isOnlien = state.isOnline[user.userId] ?? false;
-                    return Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: 14,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          color: isOnlien ? Colors.green : Colors.grey,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
+                Avatar(avatarUrl: user.avatarUrl, title: user.title),
+                if (user.chatType == "Private")
+                  BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                      final isOnlien = state.isOnline[user.userId] ?? false;
+                      return Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          width: 14,
+                          height: 14,
+                          decoration: BoxDecoration(
+                            color: isOnlien ? Colors.green : Colors.grey,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
               ],
             ),
 
@@ -67,7 +66,7 @@ class ConversationTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${user.firstName} ${user.lastName}',
+                    user.title,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -149,5 +148,3 @@ class ConversationTile extends StatelessWidget {
     );
   }
 }
-
-

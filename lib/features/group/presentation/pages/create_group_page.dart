@@ -5,6 +5,7 @@ import 'package:chat_app/core/di/locator.dart';
 import 'package:chat_app/core/services/upload/picker_repository.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_state.dart';
+import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/upload/domain/entity/upload_file_entity.dart';
 import 'package:chat_app/features/upload/presentation/bloc/upload_file_bloc.dart';
@@ -44,7 +45,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
     });
   }
 
-  void _createGroup() {
+  void _createGroup() async {
     final groupName = _groupNameController.text.trim();
 
     if (groupName.isEmpty) {
@@ -61,17 +62,23 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       return;
     }
 
-    // TODO:
-    // بعداً اینجا Cubit/Bloc را صدا می‌زنیم.
-
     debugPrint("Group Name: $groupName");
     debugPrint("Avatar: ${context.read<UploadFileBloc>().state.fileUrl}");
     debugPrint("Members: $_selectedUsers");
 
-    context.read<GroupCubit>().createGroup(
+    await context.read<GroupCubit>().createGroup(
       groupName,
       context.read<UploadFileBloc>().state.fileUrl ?? "",
       _selectedUsers.toList(),
+    );
+
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return ChatListPage(userId: widget.currentUserId);
+        },
+      ),
     );
   }
 
@@ -94,7 +101,11 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
           }
 
           final users = state.user!
-              .where((user) => user.userId != widget.currentUserId)
+              .where(
+                (user) =>
+                    user.userId != widget.currentUserId &&
+                    user.chatType == "Private",
+              )
               .toList();
 
           return Column(
@@ -257,13 +268,12 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
 
         leading: Avatar(
           avatarUrl: user.avatarUrl,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          title: user.title,
           onTap: () {},
         ),
 
         title: Text(
-          "${user.firstName} ${user.lastName}",
+          user.title,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
 

@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:chat_app/core/enums/messages_type.dart';
 import 'package:chat_app/core/helper/helper.dart';
 import 'package:chat_app/features/chat/domain/entities/message_entity.dart';
-import 'package:signalr_netcore/ihub_protocol.dart';
 
 class MessageModel extends MessageEntity {
   MessageModel({

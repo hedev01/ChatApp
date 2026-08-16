@@ -16,8 +16,9 @@ class UserDataModel extends UserDataEntity {
   UserDataModel({
     required super.id,
     required super.userId,
-    required super.firstName,
-    required super.lastName,
+    required super.chatType,
+    required super.title,
+    required super.groupId,
     required super.email,
     required super.accessToken,
     required super.avatarUrl,
@@ -27,8 +28,9 @@ class UserDataModel extends UserDataEntity {
     return UserDataModel(
       id: entity.id,
       userId: entity.userId,
-      firstName: entity.firstName,
-      lastName: entity.lastName,
+      chatType: entity.chatType,
+      groupId: entity.groupId,
+      title: entity.title,
       email: entity.email,
       accessToken: entity.accessToken,
       avatarUrl: entity.avatarUrl,
@@ -39,9 +41,10 @@ class UserDataModel extends UserDataEntity {
     return UserDataModel(
       id: json["id"],
       userId: json["userId"],
-      firstName: json["firstName"],
-      lastName: json["lastName"],
-      email: json["email"],
+      chatType: json["chatType"],
+      title: json["title"],
+      groupId: json["groupId"],
+      email: json["email"] ?? "",
       accessToken: json["accessToken"],
       avatarUrl: json["avatarUrl"] ?? "",
     );
@@ -51,9 +54,10 @@ class UserDataModel extends UserDataEntity {
     return UserDataModel(
       id: json["id"],
       userId: json["userId"],
-      firstName: json["firstName"],
-      lastName: json["lastName"],
-      email: json["email"],
+      title: json["title"],
+      chatType: json["chatType"],
+      groupId: json["groupId"],
+      email: json["email"] ?? "",
       accessToken: json["accessToken"],
       avatarUrl: json["avatarUrl"] ?? "",
     );
@@ -63,8 +67,9 @@ class UserDataModel extends UserDataEntity {
     return {
       "id" : id,
       "userId": userId,
-      "firstName": firstName,
-      "lastName": lastName,
+      "chatType" : chatType,
+      "title": title,
+      "groupId": groupId,
       "email": email,
       "accessToken": accessToken,
       "avatarUrl": avatarUrl,

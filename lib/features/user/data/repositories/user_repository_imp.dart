@@ -8,8 +8,8 @@ class UserRepositoryImp extends UserRepository {
 
   UserRepositoryImp(this.remote);
   @override
-  Future<GetUserEntity> getUsers(String userId) {
-    return remote.getUsers(userId);
+  Future<GetUserEntity> getUsers({required String userId}) {
+    return remote.getUsers(userId: userId);
   }
 
 }

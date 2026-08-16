@@ -8,16 +8,18 @@ class UserEntity {
 class UserDataEntity {
   final int id;
   final String userId;
-  final String firstName;
-  final String lastName;
+  final String chatType;
+  final String title;
+  final String groupId;
   final String email;
   final String accessToken;
   final String avatarUrl;
   UserDataEntity({
     required this.id,
     required this.userId,
-    required this.firstName,
-    required this.lastName,
+    required this.chatType,
+    required this.groupId,
+    required this.title,
     required this.email,
     required this.accessToken,
     required this.avatarUrl

@@ -12,7 +12,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(state.copyWith(status: ChatStatus.loading));
 
     try {
-      final user = await userUsecase(event.userId);
+      final user = await userUsecase(userId: event.userId);
       if (user.isSuccess!) {
         emit(state.copyWith(user: user.data, status: ChatStatus.success));
       } else {

@@ -8,15 +8,17 @@ class GetUserEntity {
 class GetUserDataEntity {
   final int id;
   final String userId;
-  final String firstName;
-  final String lastName;
+  final String chatType;
+  final String title;
+  final String groupId;
   final String email;
   final String avatarUrl;
   GetUserDataEntity({
     required this.id,
     required this.userId,
-    required this.firstName,
-    required this.lastName,
+    required this.chatType,
+    required this.title,
+    required this.groupId,
     required this.email,
     required this.avatarUrl
   });

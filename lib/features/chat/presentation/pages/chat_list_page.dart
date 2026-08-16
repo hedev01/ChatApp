@@ -81,8 +81,7 @@ class _ChatListPageState extends State<ChatListPage> {
                       );
                       return Avatar(
                         avatarUrl: user.avatarUrl,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
+                        title: user.title,
                         onTap: () => context.read<AuthUserBloc>().add(GetUser()),
                       );
                     }

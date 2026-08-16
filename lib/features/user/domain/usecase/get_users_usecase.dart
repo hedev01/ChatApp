@@ -4,7 +4,7 @@ import 'package:chat_app/features/user/domain/repositories/user_repository.dart'
 class GetUsersUsecase {
   final UserRepository userRepository;
   GetUsersUsecase(this.userRepository);
-  Future<GetUserEntity> call(String userId) async {
-    return await userRepository.getUsers(userId);
+  Future<GetUserEntity> call({required String userId}) async {
+    return await userRepository.getUsers(userId: userId);
   }
 }

@@ -68,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
 
                 return ChatAppBar(
                   title:
-                      "${widget.chatItem.firstName} ${widget.chatItem.lastName}",
+                      widget.chatItem.title,
                   desWidget: isTyping
                       ? const TypingIndicator(text: "Typing...")
                       : Row(
@@ -101,8 +101,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   widget: Avatar(
                     avatarUrl: widget.chatItem.avatarUrl,
-                    firstName: widget.chatItem.firstName,
-                    lastName: widget.chatItem.lastName,
+                    title: widget.chatItem.title,
                   ),
                 );
               },
@@ -157,7 +156,7 @@ class _ChatPageState extends State<ChatPage> {
                     replyMessage: state.replyMessage!,
                     senderName: state.replyMessage!.senderId == widget.userId
                         ? 'You'
-                        : widget.chatItem.firstName,
+                        : widget.chatItem.title,
                     onCancel: () {
                       context.read<ChatCubit>().setReplyMessage(null);
                     },

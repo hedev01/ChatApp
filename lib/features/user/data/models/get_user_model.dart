@@ -21,8 +21,10 @@ class GetUserDataModel extends GetUserDataEntity {
   GetUserDataModel({
     required super.id,
     required super.userId,
-    required super.firstName,
-    required super.lastName,
+    required super.groupId,
+    required super.chatType,
+    required super.title,
+    
     required super.email,
     required super.avatarUrl
   });
@@ -31,8 +33,9 @@ class GetUserDataModel extends GetUserDataEntity {
     return GetUserDataModel(
       id: entity.id,
       userId: entity.userId,
-      firstName: entity.firstName,
-      lastName: entity.lastName,
+      chatType: entity.chatType,
+      groupId: entity.groupId,
+      title: entity.title,
       email: entity.email,
       avatarUrl: entity.avatarUrl
     );
@@ -42,9 +45,10 @@ class GetUserDataModel extends GetUserDataEntity {
     return GetUserDataModel(
       id: json["id"],
       userId: json["userId"],
-      firstName: json["firstName"],
-      lastName: json["lastName"],
-      email: json["email"],
+      groupId: json["groupId"],
+      chatType: json["chatType"],
+      title: json["title"],
+      email: json["email"] ?? "",
       avatarUrl: json["avatarUrl"] ?? ""
     );
   }
@@ -53,9 +57,10 @@ class GetUserDataModel extends GetUserDataEntity {
     return GetUserDataModel(
       id: json["id"],
       userId: json["userId"],
-      firstName: json["firstName"],
-      lastName: json["lastName"],
-      email: json["email"],
+      chatType: json["chatType"],
+      groupId: json["groupId"],
+      title: json["title"],
+      email: json["email"] ?? "",
       avatarUrl: json["avatarUrl"] ?? ""
     );
   }
@@ -63,8 +68,9 @@ class GetUserDataModel extends GetUserDataEntity {
   Map<String, dynamic> toJson() {
     return {
       "userId": userId,
-      "firstName": firstName,
-      "lastName": lastName,
+      "chatType" : chatType,
+      "groupId" : groupId,
+      "title" : title,
       "email": email,
     };
     }

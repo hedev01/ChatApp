@@ -7,12 +7,12 @@ import 'package:chat_app/features/user/data/models/get_user_model.dart';
 import 'package:http/http.dart' as http;
 class UserRemoteDataSourceImp extends UserRemoteDataSource {
   @override
-  Future<GetUserModel> getUsers(String userId) async {
+  Future<GetUserModel> getUsers({required String userId}) async {
     GetUserModel? data;
     try {
       final response = await http
           .get(
-            Uri.parse("${Constans.baseUrl}/api/User/GetUsers"),
+            Uri.parse("${Constans.baseUrl}/api/User/GetUsers?userId=$userId"),
           )
           .timeout(Duration(seconds: Constans.timeOut));
       if (response.statusCode == 200) {
