@@ -20,7 +20,7 @@ import '../../../../core/helper/helper.dart';
 import '../../../../core/services/upload/picker_repository.dart';
 import '../../../user/domain/entity/get_user_entity.dart';
 import '../widgets/chat_bubble.dart';
-import '../widgets/chat_input.dart';
+import '../../../../global_widget/chat_input.dart';
 
 class ChatPage extends StatefulWidget {
   final GetUserDataEntity chatItem;

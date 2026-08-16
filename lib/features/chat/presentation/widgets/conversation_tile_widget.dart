@@ -1,7 +1,9 @@
+import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
+import 'package:chat_app/features/group/presentation/pages/group_chat_page.dart';
 import 'package:chat_app/global_widget/avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,13 +20,27 @@ class ConversationTile extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24),
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return ChatPage(chatItem: user, userId: userId);
-            },
-          ),
-        );
+        if (user.chatType == "Private") {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return ChatPage(chatItem: user, userId: userId);
+              },
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>  GroupChatPage(
+                groupId: user.groupId,
+                groupName: user.title,
+                currentUserId: userId,
+                groupAvatar: Constans.baseUrl + user.avatarUrl,
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(16),
