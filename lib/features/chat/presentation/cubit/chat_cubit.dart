@@ -21,7 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helper/helper.dart';
 
-class ChatCubit extends Cubit<ChatState> {
+class ChatCubit extends Cubit<ChatCubitState> {
   final ConnectChatUseCase connectChat;
   final SendMessageUsecase sendMessage;
   final ReceiveMessagesUseCase receiveMessages;
@@ -54,7 +54,7 @@ class ChatCubit extends Cubit<ChatState> {
     this.readUsecase,
     this.sendReactionUsecase,
     this.getReactionUsecase,
-  ) : super(const ChatState());
+  ) : super(const ChatCubitState());
 
   Future<void> connect(String userId) async {
     await connectChat(userId);
@@ -254,16 +254,12 @@ class ChatCubit extends Cubit<ChatState> {
       updatedReactions[request.messageId] ?? [],
     );
 
-
     updatedReactions[request.messageId] = reactionsList;
 
     emit(state.copyWith(reactions: updatedReactions));
   }
+
   void setReplyMessage(MessageEntity? message) {
-  emit(
-    state.copyWith(
-      replyMessage: message,
-    ),
-  );
-}
+    emit(state.copyWith(replyMessage: message));
+  }
 }

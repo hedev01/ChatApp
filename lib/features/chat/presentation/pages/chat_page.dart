@@ -58,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
       body: SafeArea(
         child: Column(
           children: [
-            BlocBuilder<ChatCubit, ChatState>(
+            BlocBuilder<ChatCubit, ChatCubitState>(
               builder: (context, state) {
                 final isOnline =
                     state.isOnline[widget.chatItem.userId] ?? false;
@@ -67,8 +67,7 @@ class _ChatPageState extends State<ChatPage> {
                     state.isTyping[widget.chatItem.userId] ?? false;
 
                 return ChatAppBar(
-                  title:
-                      widget.chatItem.title,
+                  title: widget.chatItem.title,
                   desWidget: isTyping
                       ? const TypingIndicator(text: "Typing...")
                       : Row(
@@ -115,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
 
             Expanded(
-              child: BlocBuilder<ChatCubit, ChatState>(
+              child: BlocBuilder<ChatCubit, ChatCubitState>(
                 builder: (context, state) {
                   final conversationId = Helper.getConversationId(
                     widget.userId,
@@ -149,7 +148,7 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            BlocBuilder<ChatCubit, ChatState>(
+            BlocBuilder<ChatCubit, ChatCubitState>(
               builder: (context, state) {
                 if (state.replyMessage != null) {
                   return ReplyPreview(
@@ -252,7 +251,7 @@ class _ChatPageState extends State<ChatPage> {
                         entity: UploadFileEntity(
                           file: File(file.path),
                           userId: widget.userId,
-                          folderName: "Media"
+                          folderName: "Media",
                         ),
                       ),
                     );

@@ -3,6 +3,8 @@ import 'package:chat_app/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/cubit/chat_cubit_state.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/features/chat/presentation/widgets/typing_indicator_widget.dart';
+import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
+import 'package:chat_app/features/group/presentation/cubit/group_state.dart';
 import 'package:chat_app/features/group/presentation/pages/group_chat_page.dart';
 import 'package:chat_app/global_widget/avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +34,13 @@ class ConversationTile extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>  GroupChatPage(
+              builder: (_) => GroupChatPage(
                 groupId: user.groupId,
                 groupName: user.title,
                 currentUserId: userId,
-                groupAvatar: Constans.baseUrl + user.avatarUrl,
+                groupAvatar: user.avatarUrl.isEmpty
+                    ? null
+                    : Constans.baseUrl + user.avatarUrl,
               ),
             ),
           );
@@ -54,7 +58,7 @@ class ConversationTile extends StatelessWidget {
               children: [
                 Avatar(avatarUrl: user.avatarUrl, title: user.title),
                 if (user.chatType == "Private")
-                  BlocBuilder<ChatCubit, ChatState>(
+                  BlocBuilder<ChatCubit, ChatCubitState>(
                     builder: (context, state) {
                       final isOnlien = state.isOnline[user.userId] ?? false;
                       return Positioned(
@@ -90,21 +94,39 @@ class ConversationTile extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 6),
-                  BlocBuilder<ChatCubit, ChatState>(
-                    builder: (context, state) {
-                      final lastMessage = state.lastMessages[user.userId];
-                      final isTyping = state.isTyping[user.userId] ?? false;
-                      if (isTyping) {
-                        return TypingIndicator(text: "Typing...");
-                      }
-                      return Text(
-                        lastMessage?.content ?? "",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
-                        ),
+                  BlocBuilder<GroupCubit, GroupState>(
+                    builder: (context, groupState) {
+                      return BlocBuilder<ChatCubit, ChatCubitState>(
+                        builder: (context, chatState) {
+                          final lastMessage =
+                              chatState.lastMessages[user.userId];
+                          final isTyping =
+                              chatState.isTyping[user.userId] ?? false;
+                          if (user.chatType != "Private") {
+                            return Text(
+                              groupState.createGroupMessage,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.blueGrey.shade700,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            );
+                          }
+                          if (isTyping) {
+                            return TypingIndicator(text: "Typing...");
+                          }
+                          return Text(
+                            lastMessage?.content ?? "",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 14,
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -115,7 +137,7 @@ class ConversationTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                BlocBuilder<ChatCubit, ChatState>(
+                BlocBuilder<ChatCubit, ChatCubitState>(
                   builder: (context, state) {
                     final sentAt =
                         state.lastMessages[user.userId]?.sentAtTime ?? "";
@@ -131,7 +153,7 @@ class ConversationTile extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                BlocBuilder<ChatCubit, ChatState>(
+                BlocBuilder<ChatCubit, ChatCubitState>(
                   builder: (context, state) {
                     final unread = state.unreadCount[user.userId] ?? 0;
 

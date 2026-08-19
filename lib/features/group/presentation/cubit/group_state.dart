@@ -1,8 +1,12 @@
 class GroupState {
-  final String groupName;
-  GroupState({this.groupName = ''});
+  final String createGroupMessage;
+  final String deleteGroupMessage;
+  GroupState({this.createGroupMessage = '', this.deleteGroupMessage = ''});
 
-  GroupState copyWith({String? groupName}) {
-    return GroupState(groupName: groupName ?? this.groupName);
+  GroupState copyWith({String? createGroupMessage, String? deleteGroupMessage}) {
+    return GroupState(
+      createGroupMessage: createGroupMessage ?? this.createGroupMessage,
+      deleteGroupMessage: deleteGroupMessage ?? this.deleteGroupMessage,
+    );
   }
 }

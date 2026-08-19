@@ -25,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkUser() async {
-     chatCubit = context.read<ChatCubit>();
-     groupCubit = context.read<GroupCubit>();
+    chatCubit = context.read<ChatCubit>();
+    groupCubit = context.read<GroupCubit>();
     GetAuthUserUsecase authUseCase = GetAuthUserUsecase(locator.get());
     try {
       final user = await authUseCase();

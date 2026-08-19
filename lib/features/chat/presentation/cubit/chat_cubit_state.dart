@@ -2,7 +2,7 @@ import 'package:chat_app/features/chat/domain/entities/message_reaction_entity.d
 
 import '../../domain/entities/message_entity.dart';
 
-class ChatState {
+class ChatCubitState {
   final Map<String, List<MessageEntity>> messages;
   final Map<String, bool> isOnline;
   final Map<String, int> unreadCount;
@@ -12,7 +12,7 @@ class ChatState {
   final Map<int, List<MessageReactionEntity>> reactions;
   final MessageEntity? replyMessage;
 
-  const ChatState({
+  const ChatCubitState({
     this.messages = const {},
     this.isOnline = const {},
     this.unreadCount = const {},
@@ -25,7 +25,7 @@ class ChatState {
 
   static const _noChange = Object();
 
-  ChatState copyWith({
+  ChatCubitState copyWith({
     Map<String, List<MessageEntity>>? messages,
     Map<String, bool>? isOnline,
     Map<String, int>? unreadCount,
@@ -35,7 +35,7 @@ class ChatState {
     Map<int, List<MessageReactionEntity>>? reactions,
     Object? replyMessage = _noChange,
   }) {
-    return ChatState(
+    return ChatCubitState(
       messages: messages ?? this.messages,
       isOnline: isOnline ?? this.isOnline,
       unreadCount: unreadCount ?? this.unreadCount,

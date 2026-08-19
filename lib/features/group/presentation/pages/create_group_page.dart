@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/core/constans/constans.dart';
 import 'package:chat_app/core/di/locator.dart';
+import 'package:chat_app/core/helper/helper.dart';
 import 'package:chat_app/core/services/upload/picker_repository.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:chat_app/features/chat/presentation/bloc/chat_state.dart';
@@ -16,9 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateGroupPage extends StatefulWidget {
-  const CreateGroupPage({super.key, required this.currentUserId});
+  const CreateGroupPage({super.key, required this.currentUserId , required this.createdByName});
 
   final String currentUserId;
+  final String createdByName;
 
   @override
   State<CreateGroupPage> createState() => _CreateGroupPageState();
@@ -70,14 +72,13 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       groupName,
       context.read<UploadFileBloc>().state.fileUrl ?? "",
       _selectedUsers.toList(),
+      widget.createdByName
     );
 
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) {
-          return ChatListPage(userId: widget.currentUserId);
-        },
+        builder: (context) =>  ChatListPage(userId: widget.currentUserId,),
       ),
     );
   }

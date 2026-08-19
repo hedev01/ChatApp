@@ -30,67 +30,67 @@ class GroupMessageBubble extends StatelessWidget {
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
-            if (showSenderName)
-              Padding(
-                padding: const EdgeInsets.only(left: 12, bottom: 4),
-                child: Text(
-                  message.senderName,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ),
+            // if (showSenderName)
+            //   Padding(
+            //     padding: const EdgeInsets.only(left: 12, bottom: 4),
+            //     child: Text(
+            //       message.senderName,
+            //       style: const TextStyle(
+            //         fontSize: 12,
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.blueAccent,
+            //       ),
+            //     ),
+            //   ),
 
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-              decoration: BoxDecoration(
-                color: isMe ? const Color(0xffE8E8ED) : Colors.black,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(18),
-                  topRight: const Radius.circular(18),
-                  bottomLeft: Radius.circular(isMe ? 18 : 3),
-                  bottomRight: Radius.circular(isMe ? 3 : 18),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.content,
-                    style: TextStyle(
-                      color: isMe ? Colors.black87 : Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+            //   decoration: BoxDecoration(
+            //     color: isMe ? const Color(0xffE8E8ED) : Colors.black,
+            //     borderRadius: BorderRadius.only(
+            //       topLeft: const Radius.circular(18),
+            //       topRight: const Radius.circular(18),
+            //       bottomLeft: Radius.circular(isMe ? 18 : 3),
+            //       bottomRight: Radius.circular(isMe ? 3 : 18),
+            //     ),
+            //   ),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         message.content,
+            //         style: TextStyle(
+            //           color: isMe ? Colors.black87 : Colors.white,
+            //           fontSize: 16,
+            //         ),
+            //       ),
 
-                  const SizedBox(height: 5),
+            //       const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        message.time,
-                        style: TextStyle(
-                          color: isMe ? Colors.grey : Colors.white60,
-                          fontSize: 10,
-                        ),
-                      ),
+            //       Row(
+            //         mainAxisSize: MainAxisSize.min,
+            //         children: [
+            //           Text(
+            //             message.time,
+            //             style: TextStyle(
+            //               color: isMe ? Colors.grey : Colors.white60,
+            //               fontSize: 10,
+            //             ),
+            //           ),
 
-                      if (isMe) ...[
-                        const SizedBox(width: 4),
-                        const Icon(
-                          Icons.done_all,
-                          size: 14,
-                          color: Colors.blue,
-                        ),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            //           if (isMe) ...[
+            //             const SizedBox(width: 4),
+            //             const Icon(
+            //               Icons.done_all,
+            //               size: 14,
+            //               color: Colors.blue,
+            //             ),
+            //           ],
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

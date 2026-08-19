@@ -28,7 +28,7 @@ void main() async {
         BlocProvider(create: (_) => PasswordVisibilityCubit()),
         BlocProvider(create: (_) => RegisterBloc(locator.get(), locator.get())),
         BlocProvider(create: (_) => LoginBloc(locator.get(), locator.get())),
-        BlocProvider(create: (context) => AuthUserBloc(locator.get()),),
+        BlocProvider(create: (context) => AuthUserBloc(locator.get())),
         BlocProvider(create: (_) => ChatBloc(locator.get())),
         BlocProvider(
           create: (_) => ChatCubit(
@@ -46,10 +46,19 @@ void main() async {
             locator.get(),
             locator.get(),
             locator.get(),
-            locator.get()
+            locator.get(),
           ),
         ),
-        BlocProvider(create: (context) => GroupCubit(locator.get(), locator.get()),),
+        BlocProvider(
+          create: (context) => GroupCubit(
+            locator.get(),
+            locator.get(),
+            locator.get(),
+            locator.get(),
+            locator.get(),
+            context.read<ChatBloc>(),
+          ),
+        ),
         BlocProvider(
           create: (_) =>
               ProfileBloc(locator.get(), locator.get(), locator.get()),

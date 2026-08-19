@@ -55,39 +55,51 @@ class _ChatListPageState extends State<ChatListPage> {
                 }
               },
 
-              child: ChatAppBar(
-                title: "Me",
-                desWidget: Text(
-                  "Your Conversations",
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
-                ),
-                firstIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {},
-                ),
-                twoIcon: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      return CreateGroupPage(currentUserId: widget.userId);
-                    },));
-                  },
-                ),
-                widget: BlocBuilder<ChatBloc, ChatState>(
-                  builder: (context, state) {
-                    if (state.status == ChatStatus.success) {
-                      final user = state.user!.firstWhere(
-                        (element) => element.userId == widget.userId,
-                      );
-                      return Avatar(
-                        avatarUrl: user.avatarUrl,
-                        title: user.title,
-                        onTap: () => context.read<AuthUserBloc>().add(GetUser()),
-                      );
-                    }
-                    return SizedBox();
-                  },
-                ),
+              child: BlocBuilder<ChatBloc, ChatState>(
+                builder: (context, chatState) {
+                  if (chatState.status != ChatStatus.success ||
+                      chatState.user == null) {
+                    return const SizedBox();
+                  }
+
+                  final user = chatState.user!.firstWhere(
+                    (element) => element.userId == widget.userId,
+                  );
+
+                  return ChatAppBar(
+                    title: "Me",
+                    desWidget: const Text(
+                      "Your Conversations",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                    firstIcon: IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {},
+                    ),
+                    twoIcon: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return CreateGroupPage(
+                                currentUserId: widget.userId,
+                                createdByName: user.title,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    widget: Avatar(
+                      avatarUrl: user.avatarUrl,
+                      title: user.title,
+                      onTap: () {
+                        context.read<AuthUserBloc>().add(GetUser());
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             Expanded(

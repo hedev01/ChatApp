@@ -8,7 +8,8 @@ class CreateGroupUsecase {
     String groupName,
     String avatarUrl,
     List<String> members,
+    String createdByName,
   ) async {
-    return _repository.createGroup(groupName, avatarUrl, members);
+    return _repository.createGroup(groupName, avatarUrl, members , createdByName);
   }
 }

@@ -1,7 +1,10 @@
+import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
+import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/group/presentation/widgets/group_info_sheet.dart';
 import 'package:chat_app/features/group/presentation/widgets/group_message_bubble.dart';
 import 'package:chat_app/global_widget/chat_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GroupChatPage extends StatefulWidget {
   final String groupId;
@@ -26,9 +29,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
   final ScrollController _scrollController = ScrollController();
 
-  // -----------------------------
-  // Mock Members
-  // -----------------------------
+  
 
   final List<GroupMemberMock> members = [
     GroupMemberMock(id: "1", name: "Ali", avatar: null, isOnline: true),
@@ -37,45 +38,43 @@ class _GroupChatPageState extends State<GroupChatPage> {
     GroupMemberMock(id: "4", name: "Reza", avatar: null, isOnline: true),
   ];
 
-  // -----------------------------
-  // Mock Messages
-  // -----------------------------
+  
 
   final List<GroupMessageMock> messages = [
     GroupMessageMock(
       id: "1",
       senderId: "2",
-      senderName: "Hossein",
-      content: "Hi Boys",
-      time: "14:20",
+      senderName: "",
+      content: "",
+      time: "",
     ),
     GroupMessageMock(
       id: "2",
       senderId: "3",
-      senderName: "Mohammad",
-      content: "hi, are you ok?",
-      time: "14:21",
+      senderName: "",
+      content: "",
+      time: "",
     ),
     GroupMessageMock(
       id: "3",
       senderId: "4",
       senderName: "Reza",
-      content: "i`m here",
-      time: "14:22",
+      content: "",
+      time: "",
     ),
     GroupMessageMock(
       id: "4",
       senderId: "2",
       senderName: "Hossein",
-      content: "Left Left Look At Me",
-      time: "14:23",
+      content: "",
+      time: "",
     ),
     GroupMessageMock(
       id: "5",
       senderId: "36d5e373-edad-4c52-b27d-612d0cdc88ed",
       senderName: "Ali",
-      content: "Yes i`m ready",
-      time: "14:24",
+      content: "",
+      time: "",
     ),
   ];
 
@@ -86,12 +85,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
     super.dispose();
   }
 
-
-
-
-  // -----------------------------
-  // Group Info
-  // -----------------------------
+  
 
   void _showGroupInfo() {
     showModalBottomSheet(
@@ -105,15 +99,13 @@ class _GroupChatPageState extends State<GroupChatPage> {
         return GroupInfoSheet(
           groupName: widget.groupName,
           groupAvatar: widget.groupAvatar,
-          members: members,
+          currentUserId: widget.currentUserId,
         );
       },
     );
   }
 
-  // -----------------------------
-  // Delete Group Mock
-  // -----------------------------
+
 
   void _deleteGroup() {
     showDialog(
@@ -130,12 +122,27 @@ class _GroupChatPageState extends State<GroupChatPage> {
               child: const Text("Cancel"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                Navigator.pop(context);
+                await context.read<GroupCubit>().deleteGroup(
+                  widget.groupId,
+                  widget.groupName,
+                );
                 Navigator.pop(context);
 
-                ScaffoldMessenger.of(this.context).showSnackBar(
-                  const SnackBar(content: Text("Group deleted (Mock)")),
-                );
+                // ScaffoldMessenger.of(
+                //   this.context,
+                // ).showSnackBar(const SnackBar(content: Text("Group deleted)")));
+                // Future.delayed(Duration(seconds: 1), () async {
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) {
+                //         return ChatListPage(userId: widget.currentUserId);
+                //       },
+                //     ),
+                //   );
+                // });
               },
               child: const Text("Delete", style: TextStyle(color: Colors.red)),
             ),
@@ -145,9 +152,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
     );
   }
 
-  // -----------------------------
-  // Build
-  // -----------------------------
+  
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +174,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
     );
   }
 
-  // -----------------------------
-  // App Bar
-  // -----------------------------
+  
 
   Widget _buildAppBar() {
     return Container(
