@@ -1,4 +1,5 @@
-import 'package:chat_app/features/chat/presentation/pages/chat_list_page.dart';
+import 'package:chat_app/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:chat_app/features/chat/presentation/bloc/chat_state.dart';
 import 'package:chat_app/features/group/presentation/cubit/group_cubit.dart';
 import 'package:chat_app/features/group/presentation/widgets/group_info_sheet.dart';
 import 'package:chat_app/features/group/presentation/widgets/group_message_bubble.dart';
@@ -29,16 +30,12 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
   final ScrollController _scrollController = ScrollController();
 
-  
-
   final List<GroupMemberMock> members = [
     GroupMemberMock(id: "1", name: "Ali", avatar: null, isOnline: true),
     GroupMemberMock(id: "2", name: "Hossein", avatar: null, isOnline: true),
     GroupMemberMock(id: "3", name: "Mohammad", avatar: null, isOnline: false),
     GroupMemberMock(id: "4", name: "Reza", avatar: null, isOnline: true),
   ];
-
-  
 
   final List<GroupMessageMock> messages = [
     GroupMessageMock(
@@ -85,8 +82,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
     super.dispose();
   }
 
-  
-
   void _showGroupInfo() {
     showModalBottomSheet(
       context: context,
@@ -104,8 +99,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
       },
     );
   }
-
-
 
   void _deleteGroup() {
     showDialog(
@@ -152,8 +145,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
     );
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,8 +164,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
       ),
     );
   }
-
-  
 
   Widget _buildAppBar() {
     return Container(
@@ -214,9 +203,35 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
                   const SizedBox(height: 3),
 
-                  Text(
-                    "${members.length} members",
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                  BlocBuilder<ChatBloc, ChatState>(
+                    builder: (context, state) {
+                      if (state.status == ChatStatus.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (state.status == ChatStatus.failure) {
+                        return Center(child: Text(state.error ?? "Error"));
+                      }
+
+                      if (state.status != ChatStatus.success) {
+                        return const SizedBox();
+                      }
+
+                      final users = state.user!
+                          .where(
+                            (user) =>
+                                user.userId != widget.currentUserId &&
+                                user.chatType == "Private",
+                          )
+                          .toList();
+                      return Text(
+                        "${users.length} members",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade600,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
